@@ -1,0 +1,100 @@
+<div class="main">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Mã</th>
+          <th>Thể Loại</th>
+          <th>Hoạt Động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of listCategory">
+          <td>{{ category.id }}</td>
+          <td>{{ category.name }}</td>
+          <td>
+            <a
+              href=""
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#myEditProduct"
+              (click)="getCategory(category.id)"
+              >Sửa</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="pagination">
+      <li class="page-item">
+        <button class="page-link" (click)="previousPage()" [disabled]="currentPage == 0 ? true:false">Previous</button>
+      </li>
+      <li class="page-item" *ngFor="let p of totalPagesArray">
+        <button class="page-link" (click)="switchPage(p-1)">{{ p }}</button>
+      </li>
+      <li class="page-item">
+        <button class="page-link" (click)="nextPage()" [disabled]="currentPage == totalPages - 1">Next</button>
+      </li>
+    </ul>
+    <a
+      href=""
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#myEditProduct"
+      (click)="resetForm()"
+      >Thêm</a
+    >
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myEditProduct">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">{{ titleName }}</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formCategory" (ngSubmit)="saveCategory()">
+          <input type="hidden" formControlName="id" />
+          <div class="form-group">
+            <label>Tên</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="VD: Kiên"
+              formControlName="name"
+            />
+            <div *ngIf="name.touched && name.invalid">
+              <div class="errors" *ngIf="name.errors?.['required']">
+                Tên không được trống*
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            {{ buttonName }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-dismiss="modal"
+          (click)="resetForm()"
+        >
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

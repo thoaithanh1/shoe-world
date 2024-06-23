@@ -1,0 +1,1190 @@
+<app-header></app-header>
+<section class="site-main">
+  <div class="account-container container">
+    <div class="account-sidebar">
+      <div class="profile">
+        <div class="profile-usertitle">
+          <div class="icon"><img [src]="userImage" alt="" /></div>
+          <div class="profile-usertitle-name">
+            <span class="name">{{ username }}</span>
+            <a href="#info" data-toggle="tab">
+              <div class="edit" (click)="selectMenuItem('info')">
+                <span class="screen-render-text"></span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="account-dashboard-card">
+          <div class="box-card">
+            <div class="items"></div>
+            <div class="box-card-bottom"></div>
+          </div>
+        </div>
+        <div class="profile-usermenu">
+          <ul>
+            <li
+              [ngClass]="{ active: selectedMenuItem === 'sale' }"
+              class="profile-usermenu-sale"
+              (click)="selectMenuItem('sale')"
+            >
+              <a href="#sale" data-toggle="tab">Mã ưu đãi</a>
+            </li>
+
+            <li
+              [ngClass]="{ active: selectedMenuItem === 'order' }"
+              class="profile-usermenu-order"
+              (click)="selectMenuItem('order')"
+            >
+              <a href="#order" data-toggle="tab">Đơn hàng</a>
+            </li>
+
+            <li
+              [ngClass]="{ active: selectedMenuItem === 'rank' }"
+              class="profile-usermenu-khtt"
+              (click)="selectMenuItem('rank')"
+            >
+              <a href="#rank" data-toggle="tab">Thẻ thành viên</a>
+            </li>
+
+            <li
+              [ngClass]="{ active: selectedMenuItem === 'address' }"
+              class="profile-usermenu-address"
+              (click)="selectMenuItem('address')"
+            >
+              <a href="#address" data-toggle="tab">Địa chỉ</a>
+            </li>
+
+            <li
+              [ngClass]="{ active: selectedMenuItem === 'wishlist' }"
+              class="profile-usermenu-wishlist"
+              (click)="selectMenuItem('wishlist')"
+            >
+              <a href="#wishlist" data-toggle="tab">Yêu thích</a>
+            </li>
+
+            <li class="profile-usermenu-logout" (click)="loggout()">
+              Đăng xuất
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="account-column-main">
+      <div class="tab-content">
+        <!-- Info user -->
+        <div
+          class="tab-pane fade"
+          id="info"
+          [ngClass]="{
+            show: selectedMenuItem === 'info',
+            active: selectedMenuItem === 'info'
+          }"
+        >
+          <div class="account-setting-form">
+            <div class="account-page-title">
+              <h1 class="title">Thông tin tài khoản</h1>
+            </div>
+            <form [formGroup]="formUser" (ngSubmit)="saveUser()">
+              <input type="hidden" formControlName="id" />
+              <input type="hidden" formControlName="avatar" />
+              <div class="row">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label>Giới tính</label>
+                    <div class="control">
+                      <span>
+                        <input
+                          type="radio"
+                          id="male"
+                          name="gender"
+                          value="1"
+                          formControlName="gender"
+                          [checked]="formUser.get('gender').value === 1"
+                        />
+                        <label for="male">Nam</label>
+                      </span>
+
+                      <span>
+                        <input
+                          type="radio"
+                          id="female"
+                          name="gender"
+                          value="2"
+                          formControlName="gender"
+                          [checked]="formUser.get('gender').value === 2"
+                        />
+                        <label for="female">Nữ</label>
+                      </span>
+
+                      <span>
+                        <input
+                          type="radio"
+                          id="other"
+                          name="gender"
+                          value="3"
+                          formControlName="gender"
+                          [checked]="formUser.get('gender').value === 3"
+                        />
+                        <label for="other">Khác</label>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <input
+                      type="file"
+                      formControlName="avatar"
+                      (change)="onFileSelectedUser($event)"
+                    />
+                  </div>
+                </div>
+                <div class="col-6">
+                  <img
+                    *ngIf="selectedImage"
+                    [src]="selectedImage"
+                    alt="Selected Image"
+                    style="width: 70px; height: 100px"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-6">
+                    <label>Họ</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="firstName"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label>Tên</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      formControlName="lastName"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Số điện thoại</label>
+                <input
+                  type="text"
+                  name="phone"
+                  class="form-control"
+                  formControlName="phoneNumber"
+                />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="email"
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Nếu bạn không muốn thay đổi mật khẩu của mình thì không cần điền password"
+                />
+              </div>
+              <div class="form-group">
+                <label>Sinh nhật</label>
+                <input type="date" class="form-control" formControlName="dob" />
+              </div>
+              <div class="form-group">
+                <button
+                  type="submit"
+                  [disabled]="formUser.invalid"
+                  class="btn btn-primary"
+                >
+                  Lưu thay đổi
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!-- Ma uu dai -->
+        <div
+          class="tab-pane fade"
+          id="sale"
+          [ngClass]="{
+            show: selectedMenuItem === 'sale',
+            active: selectedMenuItem === 'sale'
+          }"
+        >
+          <div class="account-page-title">
+            <h1 class="title">Mã ưu đãi</h1>
+          </div>
+          <div class="voucher-items-list-empty">
+            <img src="assets/images/promotion-list-empty.png" alt="" />
+            <p>Rất tiếc! Bạn chưa có mã giảm giá nào.</p>
+          </div>
+        </div>
+        <!-- Don hang -->
+        <div
+          class="tab-pane fade"
+          id="order"
+          [ngClass]="{
+            show: selectedMenuItem === 'order',
+            active: selectedMenuItem === 'order'
+          }"
+        >
+          <div class="account-page-title">
+            <h1 class="title">Đơn hàng</h1>
+          </div>
+
+          <div class="card shadow d-flex justify-content-center mt-5">
+            <!-- nav options -->
+            <ul
+              class="nav nav-pills mb-3 shadow-sm"
+              id="pills-tab"
+              role="tablist"
+            >
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="pills-all-tab"
+                  data-toggle="pill"
+                  href="#pills-all"
+                  role="tab"
+                  aria-controls="pills-all"
+                  aria-selected="true"
+                  (click)="getAllOrderByUser(userId)"
+                  >Tất cả</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-processing-tab"
+                  data-toggle="pill"
+                  href="#pills-processing"
+                  role="tab"
+                  aria-controls="pills-processing"
+                  aria-selected="false"
+                  (click)="getListOrderByStatus(1)"
+                  >Chờ xử lý</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-shipping-tab"
+                  data-toggle="pill"
+                  href="#pills-shipping"
+                  role="tab"
+                  aria-controls="pills-shipping"
+                  aria-selected="false"
+                  (click)="getListOrderByStatus(2)"
+                  >Đang giao</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-success-tab"
+                  data-toggle="pill"
+                  href="#pills-success"
+                  role="tab"
+                  aria-controls="pills-success"
+                  aria-selected="false"
+                  (click)="getListOrderByStatus(3)"
+                  >Hoàn thành</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-cancelled-tab"
+                  data-toggle="pill"
+                  href="#pills-cancelled"
+                  role="tab"
+                  aria-controls="pills-cancelled"
+                  aria-selected="false"
+                  (click)="getListOrderByStatus(4)"
+                  >Đã hủy</a
+                >
+              </li>
+            </ul>
+            <!-- content -->
+            <div class="tab-content" id="pills-tabContent p-3">
+              <!-- All Order -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-all"
+                role="tabpanel"
+                aria-labelledby="pills-all-tab"
+              >
+                <div class="orders" *ngIf="order; else noDataMessageAll">
+                  <div class="order-component">
+                    <div class="shop shop-cursor" *ngFor="let o of order">
+                      <div class="shop-header border-bottom">
+                        <div class="shop-left">
+                          <div class="shop-left-info">
+                            <img
+                              src="https://img.alicdn.com/imgextra/i1/O1CN01eZEDlJ24LnekqQ7eQ_!!6000000007375-2-tps-72-72.png"
+                              class="shop-left-info-logo"
+                            />
+                            <div class="shop-left-info-name">#{{ o.code }}</div>
+                          </div>
+                          <div class="shop-left-leading-time"></div>
+                        </div>
+                        <div class="shop-right">
+                          <div class="shop-right-status" *ngIf="o.status == 1">
+                            Chờ xử lý
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 2">
+                            Đang giao hàng
+                          </div>
+
+                          <div class="shop-right-status" *ngIf="o.status == 3">
+                            Hoàn thành
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 4">
+                            Đã hủy
+                          </div>
+                          <div class="shop-right-action"></div>
+                        </div>
+                      </div>
+                      <div class="shop-body" *ngFor="let od of o.orderDetails">
+                        <div class="order-item">
+                          <div class="item-pic" data-spm="detail_image">
+                            <a href="#">
+                              <img
+                                [src]="
+                                  getProductImage(od.productDetailId, od.image)
+                                "
+                            /></a>
+                          </div>
+                          <div class="item-main item-main-mini">
+                            <div>
+                              <div
+                                class="text title item-title"
+                                data-spm="details_title"
+                              >
+                                {{ od.name }}
+                              </div>
+                              <div class="item-sku">
+                                {{ od.color }}&nbsp;{{ od.size }}
+                              </div>
+                              <img
+                                src="https://gw.alicdn.com/tfs/TB179v9X7WE3KVjSZSyXXXocXXa-102-28.png"
+                                style="
+                                  height: 14px;
+                                  margin-top: 10px;
+                                  margin-right: 6px;
+                                "
+                              />
+                            </div>
+                          </div>
+                          <div class="item-status">
+                            <div class="item-price text bold">
+                              {{ formatPrice(od.price) }}₫
+                            </div>
+                          </div>
+                          <div class="item-quantity">
+                            <span>
+                              <span class="text desc info multiply">Qty: </span>
+                              <span class="text">&nbsp;{{ od.quantity }}</span>
+                            </span>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noDataMessageAll>
+                  <div class="order-list-empty">
+                    <img src="/assets/images/history-order-empty.png" alt="" />
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                  </div>
+                </ng-template>
+              </div>
+              <!-- Pending Order -->
+              <div
+                class="tab-pane fade"
+                id="pills-processing"
+                role="tabpanel"
+                aria-labelledby="pills-processing-tab"
+              >
+                <div class="orders" *ngIf="order; else noDataMessagePending">
+                  <div class="order-component">
+                    <div class="shop shop-cursor" *ngFor="let o of order">
+                      <div class="shop-header border-bottom">
+                        <div class="shop-left">
+                          <div class="shop-left-info">
+                            <img
+                              src="https://img.alicdn.com/imgextra/i1/O1CN01eZEDlJ24LnekqQ7eQ_!!6000000007375-2-tps-72-72.png"
+                              class="shop-left-info-logo"
+                            />
+                            <div class="shop-left-info-name">#{{ o.code }}</div>
+                          </div>
+                          <div class="shop-left-leading-time"></div>
+                        </div>
+                        <div class="shop-right">
+                          <div class="shop-right-status" *ngIf="o.status == 1">
+                            Chờ xử lý
+                          </div>
+                          <div class="shop-right-action"></div>
+                        </div>
+                      </div>
+                      <div class="shop-body" *ngFor="let od of o.orderDetails">
+                        <div class="order-item">
+                          <div class="item-pic" data-spm="detail_image">
+                            <a href="#">
+                              <img
+                                [src]="
+                                  getProductImage(od.productDetailId, od.image)
+                                "
+                            /></a>
+                          </div>
+                          <div class="item-main item-main-mini">
+                            <div>
+                              <div
+                                class="text title item-title"
+                                data-spm="details_title"
+                              >
+                                {{ od.name }}
+                              </div>
+                              <div class="item-sku">
+                                {{ od.color }}&nbsp;{{ od.size }}
+                              </div>
+                              <img
+                                src="https://gw.alicdn.com/tfs/TB179v9X7WE3KVjSZSyXXXocXXa-102-28.png"
+                                style="
+                                  height: 14px;
+                                  margin-top: 10px;
+                                  margin-right: 6px;
+                                "
+                              />
+                            </div>
+                          </div>
+                          <div class="item-status">
+                            <div class="item-price text bold">
+                              {{ formatPrice(od.price) }}₫
+                            </div>
+                          </div>
+                          <div class="item-quantity">
+                            <span>
+                              <span class="text desc info multiply">Qty: </span>
+                              <span class="text">&nbsp;{{ od.quantity }}</span>
+                            </span>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noDataMessagePending>
+                  <div class="order-list-empty">
+                    <img src="/assets/images/history-order-empty.png" alt="" />
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                  </div>
+                </ng-template>
+              </div>
+              <!-- Shipping Order -->
+              <div
+                class="tab-pane fade third"
+                id="pills-shipping"
+                role="tabpanel"
+                aria-labelledby="pills-shipping-tab"
+              >
+                <div class="orders" *ngIf="order; else noDataMessageShipping">
+                  <div class="order-component">
+                    <div class="shop shop-cursor" *ngFor="let o of order">
+                      <div class="shop-header border-bottom">
+                        <div class="shop-left">
+                          <div class="shop-left-info">
+                            <img
+                              src="https://img.alicdn.com/imgextra/i1/O1CN01eZEDlJ24LnekqQ7eQ_!!6000000007375-2-tps-72-72.png"
+                              class="shop-left-info-logo"
+                            />
+                            <div class="shop-left-info-name">#{{ o.code }}</div>
+                          </div>
+                          <div class="shop-left-leading-time"></div>
+                        </div>
+                        <div class="shop-right">
+                          <div class="shop-right-status" *ngIf="o.status == 1">
+                            Chờ xử lý
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 2">
+                            Đang giao hàng
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 3">
+                            Hoàn thành
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 4">
+                            Đã hủy
+                          </div>
+                          <div class="shop-right-action"></div>
+                        </div>
+                      </div>
+                      <div class="shop-body" *ngFor="let od of o.orderDetails">
+                        <div class="order-item">
+                          <div class="item-pic" data-spm="detail_image">
+                            <a href="#">
+                              <img
+                                [src]="
+                                  getProductImage(od.productDetailId, od.image)
+                                "
+                            /></a>
+                          </div>
+                          <div class="item-main item-main-mini">
+                            <div>
+                              <div
+                                class="text title item-title"
+                                data-spm="details_title"
+                              >
+                                {{ od.name }}
+                              </div>
+                              <div class="item-sku">
+                                {{ od.color }}&nbsp;{{ od.size }}
+                              </div>
+                              <img
+                                src="https://gw.alicdn.com/tfs/TB179v9X7WE3KVjSZSyXXXocXXa-102-28.png"
+                                style="
+                                  height: 14px;
+                                  margin-top: 10px;
+                                  margin-right: 6px;
+                                "
+                              />
+                            </div>
+                          </div>
+                          <div class="item-status">
+                            <div class="item-price text bold">
+                              {{ formatPrice(od.price) }}₫
+                            </div>
+                          </div>
+                          <div class="item-quantity">
+                            <span>
+                              <span class="text desc info multiply">Qty: </span>
+                              <span class="text">&nbsp;{{ od.quantity }}</span>
+                            </span>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noDataMessageShipping>
+                  <div class="order-list-empty">
+                    <img src="/assets/images/history-order-empty.png" alt="" />
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                  </div>
+                </ng-template>
+              </div>
+              <!-- Success Order -->
+              <div
+                class="tab-pane fade third"
+                id="pills-success"
+                role="tabpanel"
+                aria-labelledby="pills-success-tab"
+              >
+                <div class="orders" *ngIf="order; else noDataMessageSuccess">
+                  <div class="order-component" *ngFor="let o of order">
+                    <div
+                      class="shop shop-cursor"
+                      *ngFor="let od of o.orderDetails"
+                    >
+                      <div class="shop-header border-bottom">
+                        <div class="shop-left">
+                          <div class="shop-left-info">
+                            <img
+                              src="https://img.alicdn.com/imgextra/i1/O1CN01eZEDlJ24LnekqQ7eQ_!!6000000007375-2-tps-72-72.png"
+                              class="shop-left-info-logo"
+                            />
+                            <div class="shop-left-info-name">#{{ o.code }}</div>
+                          </div>
+                          <div class="shop-left-leading-time"></div>
+                        </div>
+                        <div class="shop-right">
+                          <button
+                            class="shop-right-review"
+                            (click)="getModalReviewProduct(od)"
+                            data-toggle="modal"
+                            data-target="#modalRating"
+                          >
+                            Đánh giá
+                          </button>
+                          <div class="shop-right-status" *ngIf="o.status == 1">
+                            Chờ xử lý
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 2">
+                            Đang giao hàng
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 3">
+                            Hoàn thành
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 4">
+                            Đã hủy
+                          </div>
+                          <div class="shop-right-action"></div>
+                        </div>
+                      </div>
+                      <div class="shop-body">
+                        <div class="order-item">
+                          <div class="item-pic" data-spm="detail_image">
+                            <a href="#">
+                              <img
+                                [src]="
+                                  getProductImage(od.productDetailId, od.image)
+                                "
+                            /></a>
+                          </div>
+                          <div class="item-main item-main-mini">
+                            <div>
+                              <div
+                                class="text title item-title"
+                                data-spm="details_title"
+                              >
+                                {{ od.name }}
+                              </div>
+                              <div class="item-sku">
+                                {{ od.color }}&nbsp;{{ od.size }}
+                              </div>
+                              <img
+                                src="https://gw.alicdn.com/tfs/TB179v9X7WE3KVjSZSyXXXocXXa-102-28.png"
+                                style="
+                                  height: 14px;
+                                  margin-top: 10px;
+                                  margin-right: 6px;
+                                "
+                              />
+                            </div>
+                          </div>
+                          <div class="item-status">
+                            <div class="item-price text bold">
+                              {{ formatPrice(od.price) }}₫
+                            </div>
+                          </div>
+                          <div class="item-quantity">
+                            <span>
+                              <span class="text desc info multiply">Qty: </span>
+                              <span class="text">&nbsp;{{ od.quantity }}</span>
+                            </span>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noDataMessageSuccess>
+                  <div class="order-list-empty">
+                    <img src="/assets/images/history-order-empty.png" alt="" />
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                  </div>
+                </ng-template>
+              </div>
+              <!-- Cancelled Order -->
+              <div
+                class="tab-pane fade third"
+                id="pills-cancelled"
+                role="tabpanel"
+                aria-labelledby="pills-cancelled-tab"
+              >
+                <div class="orders" *ngIf="order; else noDataMessageCancelled">
+                  <div class="order-component">
+                    <div class="shop shop-cursor" *ngFor="let o of order">
+                      <div class="shop-header border-bottom">
+                        <div class="shop-left">
+                          <div class="shop-left-info">
+                            <img
+                              src="https://img.alicdn.com/imgextra/i1/O1CN01eZEDlJ24LnekqQ7eQ_!!6000000007375-2-tps-72-72.png"
+                              class="shop-left-info-logo"
+                            />
+                            <div class="shop-left-info-name">#{{ o.code }}</div>
+                          </div>
+                          <div class="shop-left-leading-time"></div>
+                        </div>
+                        <div class="shop-right">
+                          <div class="shop-right-status" *ngIf="o.status == 1">
+                            Chờ xử lý
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 2">
+                            Đang giao hàng
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 3">
+                            Hoàn thành
+                          </div>
+                          <div class="shop-right-status" *ngIf="o.status == 4">
+                            Đã hủy
+                          </div>
+                          <div class="shop-right-action"></div>
+                        </div>
+                      </div>
+                      <div class="shop-body" *ngFor="let od of o.orderDetails">
+                        <div class="order-item">
+                          <div class="item-pic" data-spm="detail_image">
+                            <a href="#">
+                              <img
+                                [src]="
+                                  getProductImage(od.productDetailId, od.image)
+                                "
+                            /></a>
+                          </div>
+                          <div class="item-main item-main-mini">
+                            <div>
+                              <div
+                                class="text title item-title"
+                                data-spm="details_title"
+                              >
+                                {{ od.name }}
+                              </div>
+                              <div class="item-sku">
+                                {{ od.color }}&nbsp;{{ od.size }}
+                              </div>
+                              <img
+                                src="https://gw.alicdn.com/tfs/TB179v9X7WE3KVjSZSyXXXocXXa-102-28.png"
+                                style="
+                                  height: 14px;
+                                  margin-top: 10px;
+                                  margin-right: 6px;
+                                "
+                              />
+                            </div>
+                          </div>
+                          <div class="item-status">
+                            <div class="item-price text bold">
+                              {{ formatPrice(od.price) }}₫
+                            </div>
+                          </div>
+                          <div class="item-quantity">
+                            <span>
+                              <span class="text desc info multiply">Qty: </span>
+                              <span class="text">&nbsp;{{ od.quantity }}</span>
+                            </span>
+                          </div>
+                          <div class="clear"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <ng-template #noDataMessageCancelled>
+                  <div class="order-list-empty">
+                    <img src="/assets/images/history-order-empty.png" alt="" />
+                    <p>Bạn chưa có đơn hàng nào.</p>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Rank -->
+        <div
+          class="tab-pane fade"
+          id="rank"
+          [ngClass]="{
+            show: selectedMenuItem === 'rank',
+            active: selectedMenuItem === 'rank'
+          }"
+        >
+          <h4 class="mt-2">Rank</h4>
+          <p>Rank</p>
+        </div>
+        <!-- Dia chi -->
+        <div
+          class="tab-pane fade"
+          id="address"
+          [ngClass]="{
+            show: selectedMenuItem === 'address',
+            active: selectedMenuItem === 'address'
+          }"
+        >
+          <!-- Modal address -->
+          <div
+            class="modal-new-address modal in"
+            [ngStyle]="{ display: isHidden ? 'none' : '' }"
+          >
+            <div class="modal-backdrop">
+              <div class="modal-container">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <div class="modal-close" (click)="hideModal()">
+                      <span class="screen-reader-text">close</span>
+                    </div>
+                    <h4 class="modal-title">Chỉnh sửa địa chỉ</h4>
+                  </div>
+                  <div class="checkout-shipping">
+                    <div class="checkout-shipping-form">
+                      <form action="" [formGroup]="formAddress">
+                        <div class="row">
+                          <div class="form-group col-sm-6 active">
+                            <label for="name">Họ tên</label>
+                            <input
+                              type="text"
+                              name=""
+                              value="Hoàng Bảo Nhi"
+                              id="name"
+                              placeholder="Nhập họ và tên"
+                              class="form-control"
+                            />
+                          </div>
+                          <div class="form-group col-sm-6 active">
+                            <label for="phone">Số điện thoại</label>
+                            <input
+                              type="text"
+                              name=""
+                              value="0123 456 789"
+                              id="phone"
+                              placeholder="Nhập số điện thoại"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="form-group col-sm-6 active">
+                            <label for="tinh">Tỉnh / Thành phố</label>
+                            <select
+                              name="state"
+                              id="tinh"
+                              class="form-control"
+                              (change)="getListDistrictByProvince($event)"
+                            >
+                              <option></option>
+                              <option
+                                *ngFor="let p of listProvince"
+                                [value]="p.code"
+                              >
+                                {{ p.name }}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="form-group col-sm-6 active">
+                            <label for="huyen">Quận / Huyện</label>
+                            <select
+                              name="city"
+                              id="huyen"
+                              class="form-control"
+                              (change)="getListWardByDistrict($event)"
+                            >
+                              <option>Chọn</option>
+                              <option
+                                *ngFor="let d of listDistrict"
+                                [value]="d.code"
+                              >
+                                {{ d.name }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group active">
+                          <label for="xa">Phường / Xã</label>
+                          <select name="ward" id="xa" class="form-control">
+                            <option>Chọn</option>
+                            <option *ngFor="let w of listWard" [value]="w.code">
+                              {{ w.name }}
+                            </option>
+                          </select>
+                        </div>
+                        <div class="form-group active">
+                          <label for="dia-chi">Địa chỉ chi tiết</label>
+                          <input
+                            type="text"
+                            name=""
+                            id="dia-chi"
+                            placeholder="Tòa nhà, số nhà, tên đường"
+                            class="form-control"
+                            formControlName="location"
+                          />
+                        </div>
+                        <div class="form-group form-address-type">
+                          <label>Loại địa chỉ</label>
+                          <div class="control">
+                            <label class="radio active">
+                              <input
+                                type="radio"
+                                name="address-type"
+                                value="1"
+                                checked="checked"
+                              />
+                              <span>Công ty</span>
+                            </label>
+                            <label class="radio active">
+                              <input
+                                type="radio"
+                                name="address-type"
+                                value="2"
+                              />
+                              <span>Nhà riêng</span>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="form-checkbox active">
+                          <input
+                            type="checkbox"
+                            name=""
+                            id="checkbox1"
+                            value="true"
+                          />
+                          <label for="checkbox1">
+                            <span>Đặt làm địa chỉ mặc định</span>
+                          </label>
+                        </div>
+                        <div class="button">
+                          <button class="btn-save">Cập nhật</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- List address -->
+          <div
+            class="account-page-addresses"
+            [ngStyle]="{ display: isHidden ? '' : 'none' }"
+          >
+            <div class="account-page-title">
+              <h1 class="title">Sổ địa chỉ</h1>
+            </div>
+            <div class="account-addresses-item">
+              <div
+                class="account-addresses-item default"
+                *ngFor="let a of listAddress"
+              >
+                <div class="info">
+                  <div class="address">
+                    {{ a.location }}, {{ a.wards }}, {{ a.district }},
+                    {{ a.city }}
+                  </div>
+                  <div class="name-phone">
+                    <div class="name">
+                      {{ a.user.lastName }} {{ a.user.firstName }}
+                    </div>
+                    <div class="line"></div>
+                    <div class="phone">{{ a.user.phoneNumber }}</div>
+                  </div>
+                  <div class="address-type">
+                    <label class="label label-type">
+                      <span>Nhà riêng</span>
+                    </label>
+                    <label
+                      class="label label-default"
+                      *ngIf="a.isDefault == false"
+                    >
+                      <span>Thiết lập mặc định</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="action">
+                  <span class="edit" (click)="showModal(a.id)">Sửa</span><br />
+                  <span
+                    class="delete"
+                    (click)="deleteAddress(a.id, a.user.id)"
+                    *ngIf="a.isDefault == false"
+                    >Xóa</span
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="account-addresses-btn-addnew">
+              <button class="btn btn-primary" (click)="showModal(0)">
+                Thêm địa chỉ
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Danh sach yeu thich -->
+        <div
+          class="tab-pane fade"
+          id="wishlist"
+          [ngClass]="{
+            show: selectedMenuItem === 'wishlist',
+            active: selectedMenuItem === 'wishlist'
+          }"
+        >
+          <div>
+            <div title="Yeu thich">
+              <div class="account-page-title">
+                <h1 class="title">Sản phẩm yêu thích</h1>
+              </div>
+              <div class="products-grid products-grid-viewed">
+                <div class="row">
+                  <div
+                    class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat"
+                    *ngFor="let pro of listFavorite"
+                  >
+                    <div class="featured-item">
+                      <div class="featured-item-pic set-bg">
+                        <a
+                          href=""
+                          [routerLink]="'/product-detail/' + pro.productId"
+                          ><img
+                            [src]="
+                              getImageProduct(pro.productId, pro.productImage)
+                            "
+                            loading="lazy"
+                            alt=""
+                            style="width: 270px; height: 200px"
+                        /></a>
+                        <ul class="featured-item-pic-hover">
+                          <li>
+                            <a (click)="deleteProductInFavorite(pro.productId)"
+                              ><i class="fas fa-trash"></i
+                            ></a>
+                          </li>
+                          <li>
+                            <a
+                              href="#"
+                              [routerLink]="'/product-detail/' + pro.productId"
+                              ><i class="fa fa-retweet"></i
+                            ></a>
+                          </li>
+                          <li>
+                            <a href="#" routerLink="/cart"
+                              ><i class="fa fa-shopping-cart"></i
+                            ></a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="featured-item-text">
+                        <h6>
+                          <a href="#">{{ pro.productName }}</a>
+                        </h6>
+                        <p>{{ formatPrice(pro.price) }}₫</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-fix-right" *ngIf="scrollY > 200">
+    <div class="back-to-top" (click)="backToTop()">
+      <span>TOP</span>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>
+
+<div class="modal fade" id="modalRating">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Đánh giá sản phẩm</h4>
+        <button type="button" class="close btn-close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <form [formGroup]="formReview" (ngSubmit)="saveReview()">
+        <div class="modal-body">
+          <div class="main-product-wrapper">
+            <div class="image-wrapper wrapper">
+              <img
+                [src]="
+                  getProductImage(
+                    productReview.productDetailId,
+                    productReview.image
+                  )
+                "
+                alt=""
+              />
+            </div>
+            <div formGroupName="productDetail">
+              <input type="hidden" formControlName="id" />
+            </div>
+            <div class="product-wrapper">
+              <div class="product-name">
+                {{ productReview.name }}
+              </div>
+              <div class="product-cat">
+                Nhóm màu:{{ productReview.color }}, Kích thước:
+                {{ productReview.size }}
+              </div>
+            </div>
+          </div>
+          <div class="star w-50 rating-star">
+            <div class="label-rating">Chất lượng sản phẩm</div>
+            <div class="rating">
+              <ngx-star-rating
+                formControlName="rating"
+                [id]="'rating'"
+                [value]="ratingStar"
+              ></ngx-star-rating>
+            </div>
+          </div>
+          <div class="comment">
+            <textarea
+              class="body"
+              rows="3"
+              formControlName="comment"
+              placeholder="Hãy chia sẻ những điều bạn thích về sản phẩm này với những người mua khác nhé."
+              style="
+                padding-left: 3px;
+                min-height: 100px;
+                color: rgba(0, 0, 0, 0.87);
+              "
+            ></textarea>
+            <div *ngIf="comment.touched && comment.invalid">
+              <div class="errors" *ngIf="comment.errors?.['required']">
+                Vui lòng nhập đánh giá của bạn*
+              </div>
+              <div class="errors" *ngIf="comment.errors?.['minlength']">
+                Đánh giá phải từ 15 ký tự trở lên*
+              </div>
+            </div>
+          </div>
+          <div class="upload">
+            <label for="file-upload" class="custom-file-upload">
+              <i class="fa fa-cloud-upload"></i>Thêm Hình ảnh
+            </label>
+            <input
+              id="file-upload"
+              formControlName="image"
+              (change)="onFileSelectedUser($event)"
+              type="file"
+            />
+            <span
+              class="remove-image"
+              (click)="removeFileSelected()"
+              *ngIf="selectedImage !== 'assets/images/default-user.png'"
+              >X</span
+            >
+            <img
+              *ngIf="selectedImage"
+              [src]="selectedImage"
+              class="show-image"
+              alt="Selected Image"
+            />
+          </div>
+          <div formGroupName="user">
+            <input type="hidden" formControlName="id" />
+          </div>
+          <div formGroupName="order">
+            <input type="hidden" formControlName="id" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            class="btn btn-save"
+            type="submit"
+            [disabled]="formReview.invalid"
+          >
+            <i class="fa-regular fa-floppy-disk"></i>&nbsp;Hoàn thành
+          </button>
+          <button class="btn btn-cancel" data-dismiss="modal" #clickClose>
+            <i class="fa-solid fa-ban"></i>&nbsp;Trở lại
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

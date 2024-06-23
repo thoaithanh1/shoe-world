@@ -1,0 +1,240 @@
+<div class="main">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Mã</th>
+          <th>Ảnh</th>
+          <th>Tên Sản Phẩm</th>
+          <th>Số Lượng</th>
+          <th>Giá (VNĐ)</th>
+          <th>Giới Tính</th>
+          <th>Màu Sắc</th>
+          <th>Kích Thước</th>
+          <th>Hãng</th>
+          <th>Thể Loại</th>
+          <th>Trạng Thái</th>
+          <th>Hành Động</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pro of listProductDetail">
+          <td>{{ pro.id }}</td>
+          <td>
+            <img
+              [src]="getImageProduct(pro.id, pro.mainImage)"
+              alt=""
+              style="width: 70px; height: 70px"
+            />
+          </td>
+          <td>{{ pro.productName }}</td>
+          <td>{{ pro.quantity }}</td>
+          <td>{{ pro.price }}</td>
+          <td *ngIf="pro.gender == 0">Nam</td>
+          <td *ngIf="pro.gender == 1">Nữ</td>
+          <td *ngIf="pro.gender == 2">Unisex</td>
+          <td>{{ pro.colorName }}</td>
+          <td>{{ pro.sizeName }}</td>
+          <td>{{ pro.brandName }}</td>
+          <td>{{ pro.categoryName }}</td>
+          <td>
+            <div class="badge badge-primary">
+              {{ pro.status == true ? "Còn hàng" : "Hết hàng" }}
+            </div>
+          </td>
+          <td>
+            <a
+              href=""
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#myEditProduct"
+              (click)="getProductDetail(pro.id)"
+              >Sửa</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ul class="pagination">
+        <li class="page-item">
+          <button class="page-link" (click)="previousPage()" [disabled]="currentPage == 0">Previous</button>
+        </li>
+        <li class="page-item" *ngFor="let p of totalPagesArray">
+          <button class="page-link" (click)="switchPage(p-1)">{{ p }}</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link" (click)="nextPage()" [disabled]="currentPage == totalPages - 1">Next</button>
+        </li>
+      </ul>
+    <a
+      href=""
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#myEditProduct"
+      (click)="resetForm()"
+      >Thêm</a
+    >
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="myEditProduct">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">{{ titleName }}</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form [formGroup]="formProductDetail" (ngSubmit)="addProductDetail()">
+          <input type="hidden" formControlName="id" />
+          <div class="form-group">
+            <label>Ảnh</label>
+            <input
+              type="file"
+              #mainImage
+              (change)="onFileSelected($event)"
+            />
+            <img
+              [src]="selectedImage"
+              alt="Selected Image"
+              style="width: 70px; height: 120px"
+            />
+          </div>
+          <div class="form-group">
+            <label>Ảnh chi tiết</label> <br />
+            <input type="file" multiple #subImage (change)="onSubFileSelected($event)" /> <br>
+            <img
+              *ngFor="let image of subImages"
+              [src]="image"
+              alt=""
+              style="width: 70px; height: 120px"
+            />
+          </div>
+          <div class="form-group" formGroupName="product">
+            <label>Tên sản phẩm</label>
+            <select class="form-control" formControlName="id">
+              <option *ngFor="let product of listProduct" [value]="product.id">
+                {{ product.name }}
+              </option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Giá</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="VD: 1000"
+                  formControlName="price"
+                />
+                <div *ngIf="price.touched && price.invalid">
+                  <div class="errors" *ngIf="price.errors?.['required']">
+                    Giá không được trống*
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Số Lượng</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="VD: 1"
+                  formControlName="quantity"
+                />
+                <div *ngIf="quantity.touched && quantity.invalid">
+                  <div class="errors" *ngIf="quantity.errors?.['required']">
+                    Số lượng không được trống*
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+            <label>Giới Tính</label><br>
+            <input
+              type="radio"
+              class="form-select-input"
+              formControlName="gender"
+              value="0"
+            />Nam
+            <input
+              type="radio"
+              class="form-select-input"
+              formControlName="gender"
+              value="1"
+            />Nữ
+            <input
+              type="radio"
+              class="form-select-input"
+              formControlName="gender"
+              value="2"
+            />Unisex
+            <div *ngIf="gender.touched && gender.invalid">
+              <div class="errors" *ngIf="gender.errors?.['required']">
+                Giới tính không được trống*
+              </div>
+            </div>
+          </div>
+            </div>
+            <div class="col-6">
+                <label>Trạng Thái</label><br>
+                <input type="checkbox" value="true" formControlName="status">Bật
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group" formGroupName="color">
+                <label>Màu Sắc</label>
+                <select class="form-control" formControlName="id">
+                  <option value="" disabled selected>Select an option</option>
+                  <option *ngFor="let color of listColor" [value]="color.id">
+                    {{ color.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group" formGroupName="size">
+                <label>Kích Thước</label>
+                <select class="form-control" formControlName="id">
+                  <option
+                    *ngFor="let size of listSize"
+                    [value]="size.id"
+                  >
+                    {{ size.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="formProductDetail.invalid"
+          >
+            {{ buttonName }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="resetForm()">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

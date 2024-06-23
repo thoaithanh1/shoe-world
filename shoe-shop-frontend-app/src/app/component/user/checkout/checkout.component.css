@@ -1,0 +1,441 @@
+.checkout {
+  padding-top: 80px;
+  padding-bottom: 60px;
+}
+
+.checkout h6 {
+  color: #999999;
+  text-align: left;
+  background: #f5f5f5;
+  border-top: 1px solid #e1e1e1;
+  padding: 20px 20px 20px;
+  margin-bottom: 75px;
+}
+
+/* .checkout h6 span {
+  font-size: 16px;
+  color: #6ab963;
+  margin-right: 5px;
+} */
+
+.checkout h6 a {
+  text-decoration: underline;
+  color: #999999;
+}
+
+.badge-default {
+  margin-left: 20px;
+  font-size: 10px;
+  color: #ee4d2d;
+  border: 1px solid #ee4d2d;
+  background: #f5f5f5;
+  padding: 3px 5px;
+}
+
+.btn-address > button {
+  margin-left: 20px;
+  color: rgb(57, 130, 232);
+  background: #f5f5f5;
+  border: none;
+}
+
+.btn-address > button:hover {
+  cursor: pointer;
+}
+
+.btn-address > button:focus {
+  outline: none;
+}
+
+.checkout-form h4 {
+  color: #1c1c1c;
+  font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+}
+
+.checkout-form p {
+  column-rule: #b2b2b2;
+}
+
+.checkout-input {
+  margin-bottom: 24px;
+}
+
+.checkout-input p {
+  color: #1c1c1c;
+  margin-bottom: 20px;
+}
+
+.checkout-input-add {
+  margin-bottom: 20px;
+}
+
+.checkout-input::placeholder {
+  color: #b2b2b2;
+}
+
+.checkout-input-checkbox {
+  margin-bottom: 10px;
+}
+
+.checkout-input-checkbox label {
+  position: relative;
+  font-size: 16px;
+  color: #1c1c1c;
+  padding-left: 40px;
+  cursor: pointer;
+}
+
+.checkout-input-checkbox label input {
+  position: absolute;
+  visibility: hidden;
+}
+.checkout-input-checkbox label input:checked ~ .checkmark {
+  background: #7fad39;
+  border-color: #7fad39;
+}
+
+.checkout-input-checkbox label input:checked ~ .checkmark:after {
+  opacity: 1;
+}
+
+.checkout-input-checkbox label .checkmark {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  height: 16px;
+  width: 16px;
+  border: 1px solid #a6a6a6;
+  content: "";
+  border-radius: 50%;
+}
+
+.checkout-input-checkbox label .checkmark:after {
+  position: absolute;
+  left: 3px;
+  top: 2px;
+  width: 8px;
+  height: 8px;
+  border: solid white;
+  border-width: 3px 3px 0px 0px;
+  -webkit-transform: rotate(127deg);
+  -ms-transform: rotate(127deg);
+  transform: rotate(127deg);
+  content: "";
+  opacity: 0;
+}
+
+.checkout-order {
+  background: #f5f5f5;
+  padding: 40px;
+  padding-top: 30px;
+}
+
+.checkout-order h4 {
+  color: #1c1c1c;
+  font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.checkout-order .checkout-order-products {
+  font-size: 18px;
+  color: #1c1c1c;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.checkout-order .checkout-order-subtotal {
+  font-size: 18px;
+  color: #1c1c1c;
+  font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 25px;
+  margin-bottom: 15px;
+  padding-top: 10px;
+}
+
+.checkout-order .checkout-order-subtotal span {
+  float: right;
+}
+
+.checkout-order .checkout-order-shipping {
+  font-size: 18px;
+  color: #1c1c1c;
+  font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 25px;
+  margin-bottom: 15px;
+  padding-top: 10px;
+}
+
+.checkout-order .checkout-order-shipping span {
+  float: right;
+}
+
+.checkout-order .checkout-input-checkbox label {
+  padding-left: 20px;
+}
+
+.checkout-order .checkout-order-total {
+  font-size: 18px;
+  color: #1c1c1c;
+  font-weight: 700;
+  border-bottom: 1px solid #e1e1e1;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.checkout-order .checkout-order-total span {
+  float: right;
+  color: #dd2222;
+}
+
+.checkout-order button {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  background-color: #7fad39;
+  border: none;
+  letter-spacing: 2px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0;
+}
+
+.checkout-order button:hover {
+  cursor: pointer;
+}
+
+.checkout-order button:focus {
+  outline: none;
+}
+
+.shopping-cart-table {
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
+
+thead tr {
+  border-bottom: 1px solid #ebebeb;
+}
+
+thead th {
+  font-size: 18px;
+  font-weight: 500;
+  color: black;
+  padding-bottom: 20px;
+}
+
+tbody td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.shopping-product {
+  text-align: left;
+}
+
+.shopping-cart-item {
+  width: 580px;
+  text-align: left;
+}
+
+.shopping-cart-item > a {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.shopping-cart-item > .product-attributes {
+  color: black;
+  display: inline-block;
+}
+
+.product-attributes .product-size {
+  font-size: 14px;
+  color: #b2b2b2;
+}
+
+.product-attributes .product-size span {
+  margin-left: 100px;
+}
+
+.shopping-cart-price {
+  width: 200px;
+}
+
+.shopping-cart-total {
+  width: 100px;
+}
+
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: #666;
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: #7de0f8;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+.location button{
+  float: right;
+  color: #2988e1;
+  background: #fff;
+  border: none;
+}
+
+.location button:hover {
+  cursor: pointer;
+}
+
+.user-info {
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+.user-info > .name {
+  font-size: 18px;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #a6a6a6;
+}
+
+.user-info > .contact {
+  font-weight: 300;
+}
+
+.add-address {
+  border: 1px solid #a6a6a6;
+  color: #6b6b6b;
+  padding: 7px 12px;
+  background-color: #ffffff;
+}
+
+.add-address:hover {
+  cursor: pointer;
+  background-color: #f3f1f1;
+}
+
+.add-address:focus {
+  outline: none;
+}
+
+.btn-cancel {
+  padding: 6px 35px;
+  margin-right: 10px;
+  outline: none;
+  border: 1px solid #a6a6a6;
+  background-color: #fff;
+}
+
+.btn-cancel:hover {
+  cursor: pointer;
+  background-color: #f3f1f1;
+}
+
+.btn-confirm {
+  padding: 6px 20px;
+  outline: none;
+  border: 1px solid #a6a6a6;
+}
+
+.btn-confirm:hover {
+  cursor: pointer;
+}
+
+/* Custom checkbox */
+.default-address {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.default-address input {
+  padding: 0;
+  height: initial;
+  width: initial;
+  margin-bottom: 0;
+  display: none;
+  cursor: pointer;
+}
+
+.default-address label {
+  position: relative;
+  cursor: pointer;
+}
+
+.default-address label:before {
+  content:'';
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: 2px solid #a6a6a6;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.default-address input:checked + label:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 6px;
+  height: 14px;
+  border: solid #0079bf;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

@@ -1,0 +1,169 @@
+<app-header></app-header>
+<section class="shopping-cart">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="shopping-cart-table">
+          <table>
+            <thead>
+              <tr>
+                <th class="shopping-product">Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Số Lượng</th>
+                <th>Tổng Tiền</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pro of listCart">
+                <td class="shopping-cart-item">
+                  <a
+                    href=""
+                    [routerLink]="'/product-detail/' + pro.productDetail.id"
+                  >
+                    <img
+                      [src]="
+                        getProductImage(
+                          pro.productDetail.id,
+                          pro.productDetail.mainImage
+                        )
+                      "
+                      alt=""
+                      style="width: 100px; height: 100px"
+                    />
+                  </a>
+                  <h5 class="product-attributes">
+                    {{ pro.productDetail.product.name }}
+                    <p class="product-color">
+                      Màu {{ pro.productDetail.color.name }}
+                    </p>
+                    <p class="product-size">
+                      Size: {{ pro.productDetail.size.name }}
+                    </p>
+                  </h5>
+                </td>
+                <td class="shopping-cart-price">
+                  {{ formatNumber(pro.price) }}₫
+                </td>
+                <td class="shopping-cart-quantity">
+                  <div class="quantity">
+                    <div class="pro-qty">
+                      <span class="dec qtybtn" (click)="onDescQty(pro.productDetail.id, pro.quantity, pro.price)">-</span>
+                      <input type="text" [value]="pro.quantity" />
+                      <span class="inc qtybtn" (click)="onAscQty(pro.productDetail.id, pro.quantity, pro.price)">+</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="shopping-cart-total">
+                  {{ formatNumber(pro.price * pro.quantity) }}₫
+                </td>
+                <td class="shopping-cart-item-close">
+                  <span>
+                    <button
+                      class="btn-delete-product"
+                      (click)="deleteProductInCart(pro.productDetail.id)"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="listCartHasLocal">
+              <tr *ngFor="let o of listCartNotLoggedIn">
+                <td class="shopping-cart-item">
+                  <a
+                    href=""
+                    [routerLink]="'/product-detail/' + o.productDetailId"
+                  >
+                    <img
+                      [src]="getProductImage(o.productDetailId, o.productImage)"
+                      alt=""
+                      style="width: 100px; height: 100px"
+                    />
+                  </a>
+                  <h5 class="product-attributes">
+                    {{ o.productName }}
+                    <p class="product-size">{{ o.sizeName }}</p>
+                  </h5>
+                </td>
+                <td class="shopping-cart-price">
+                  {{ formatNumber(o.totalPrice) }}₫
+                </td>
+                <td class="shopping-cart-quantity">
+                  <div class="quantity">
+                    <div class="pro-qty">
+                      <span class="dec qtybtn" (click)="onDescQty(o.productDetailId, o.quantity, o.totalPrice)">-</span>
+                      <input type="text" [value]="o.quantity" />
+                      <span class="inc qtybtn" (click)="onAscQty(o.productDetailId, o.quantity, o.totalPrice)">+</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="shopping-cart-total">
+                  {{ formatNumber(o.totalPrice * o.quantity) }}₫
+                </td>
+                <td class="shopping-cart-item-close">
+                  <span>
+                    <button
+                      class="btn-delete-product"
+                      (click)="deleteProductInCartSession(o.productDetailId)"
+                    >
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="no-data-cart" *ngIf="isEmptyCart">
+      <p>
+        Không có sản phẩm nào trong giỏ! 
+        
+      </p>
+      <img src="assets/images/products-viewed-empty.png" alt="" style="width: 270px; height: 270px;"/>
+    </div> -->
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="shoping-cart-btns">
+          <a href="#" class="continue-shopping" routerLink="/product-menu"
+            >Tiếp tục mua sắm</a
+          >
+          <a href="#" class="update-cart"
+            ><i class="fas fa-spinner"></i> Cập nhật giỏ hàng</a
+          >
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="shopping-continue">
+          <div class="shopping-discount">
+            <h5>Mã giảm giá</h5>
+            <form action="#">
+              <input type="text" placeholder="Nhập mã giảm giá của bạn" />
+              <button type="submit" class="site-btn">Áp dụng giảm giá</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="shopping-checkout">
+          <h5>Tổng tiền giỏ hàng</h5>
+          <ul>
+            <li>
+              Tổng cộng <span>{{ formatNumber(totalCart) }}₫</span>
+            </li>
+            <li>
+              Tổng <span>{{ formatNumber(totalCart) }}₫</span>
+            </li>
+          </ul>
+          <a class="primary-btn" (click)="redirectToPayment()">Mua hàng</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

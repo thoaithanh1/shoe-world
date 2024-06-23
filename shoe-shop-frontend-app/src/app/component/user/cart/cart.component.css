@@ -1,0 +1,265 @@
+.shopping-cart {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  font-family: 'Cairo', sans-serif;
+}
+
+.shopping-cart-table {
+  margin-bottom: 30px;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+}
+
+thead tr {
+  border-bottom: 1px solid #ebebeb;
+}
+
+thead th {
+  font-size: 20px;
+  font-weight: 700;
+  color: black;
+  padding-bottom: 20px;
+}
+
+.shopping-product {
+  text-align: left;
+}
+
+tbody td {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.shopping-cart-item {
+  width: 630px;
+  text-align: left;
+}
+
+.shopping-cart-item > a {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.shopping-cart-item > h5 {
+  color: black;
+  display: inline-block;
+}
+
+.shopping-cart-item-close {
+  text-align: right;
+}
+
+.shopping-cart-item-close > span {
+  font-size: 24px;
+  color: #b2b2b2;
+  cursor: pointer;
+}
+
+.shopping-cart-quantity {
+  width: 225px;
+}
+
+.pro-qty {
+  width: 120px;
+  height: 40px;
+  margin: 0 auto;
+  display: flex;
+  background-color: #f5f5f5;
+}
+
+.pro-qty > input {
+  width: 40px;
+  color: #1c1c1c;
+  text-align: center;
+  background-color: #f5f5f5;
+  border: none;
+}
+
+.pro-qty > input:focus {
+  outline: none;
+}
+
+.qtybtn {
+  width: 40px;
+  height: inherit;
+  line-height: 40px;
+  text-align: center;
+}
+
+.qtybtn:hover {
+  cursor: pointer;
+}
+
+.shoping-cart-btns {
+  text-align: center;
+  display: block;
+}
+
+.continue-shopping {
+  color: #6f6f6f;
+  padding: 14px 30px 12px;
+  background: #f5f5f5;
+  font-weight: 700;
+  float: left;
+}
+
+.update-cart {
+  color: #6f6f6f;
+  padding: 14px 30px 12px;
+  background: #f5f5f5;
+  font-weight: 700;
+  float: right;
+}
+
+.continue-shopping,
+.update-cart:hover {
+  text-decoration: none;
+}
+
+.shopping-continue {
+  margin-top: 50px;
+}
+
+.shopping-discount h5 {
+  font-size: 20px;
+  color: #1c1c1c;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.shopping-checkout {
+  background: #f2f2f2;
+  padding: 30px;
+  padding-top: 20px;
+  margin-top: 50px;
+}
+
+.shopping-discount form input {
+  width: 255px;
+  height: 46px;
+  border: 1px solid #cccccc;
+  font-size: 16px;
+  color: #b2b2b2;
+  text-align: center;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.shopping-discount form input::placeholder {
+  color: #b2b2b2;
+}
+
+.shopping-discount form input:focus {
+  outline: none;
+}
+
+.shopping-discount form button {
+  padding: 15px 30px 11px;
+  font-size: 12px;
+  color: white;
+  font-weight: 700;
+  border: none;
+  letter-spacing: 4px;
+  background: #6f6f6f;
+}
+
+.shopping-discount form button:hover {
+  cursor: pointer;
+}
+
+.shopping-discount form button:focus {
+  outline: none;
+}
+
+.shopping-checkout .primary-btn {
+  display: block;
+  text-align: center;
+}
+
+.shopping-checkout .primary-btn:hover {
+  cursor: pointer;
+}
+
+.shopping-checkout > h5 {
+  color: black;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 28px;
+}
+
+.shopping-checkout > ul {
+  margin-bottom: 28px;
+  padding: 0;
+}
+
+.shopping-checkout > ul li {
+  font-size: 16px;
+  color: black;
+  font-weight: 700;
+  list-style: none;
+  overflow: hidden;
+  border-bottom: 1px solid #ebebeb;
+  padding-bottom: 13px;
+  margin-bottom: 18px;
+}
+
+.shopping-checkout > ul li:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.shopping-checkout > ul li span {
+  font-size: 18px;
+  color: #dd2222;
+  float: right;
+}
+
+.shopping-checkout > .primary-btn {
+  color: #ffffff;
+  background-color: #7fad39;
+  padding: 10px 28px 10px;
+  font-size: 14px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.shopping-checkout > .primary-btn:hover {
+  text-decoration: none;
+}
+
+.product-attributes .product-size {
+  font-size: 14px;
+  color: #b2b2b2;
+}
+
+.btn-delete-product {
+  outline: none;
+  border: none;
+  background-color: #ffffff;
+}
+
+.btn-delete-product:hover {
+  cursor: pointer;
+}
+
+.no-data-cart {
+  margin-bottom: 100px;
+  width: 100%;
+  height: 350px;
+  line-height: 100px;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.no-data-cart p {
+  align-items: center;
+  color: #6f6f6f;
+  font-size: 20px;
+  height: 70px;
+  margin-bottom: 0;
+}

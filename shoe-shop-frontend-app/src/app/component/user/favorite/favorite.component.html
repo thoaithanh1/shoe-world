@@ -1,0 +1,42 @@
+<app-header></app-header>
+<section class="favorite">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat" *ngFor="let pro of listFavorite">
+        <div class="featured-item">
+          <div class="featured-item-pic set-bg">
+            <a href="" [routerLink]="'/product-detail/' + pro.productId"
+              ><img
+                [src]="getImageProduct(pro.productId, pro.productImage)"
+                loading="lazy"
+                alt=""
+                style="width: 270px; height: 270px"
+            /></a>
+            <ul class="featured-item-pic-hover">
+              <li>
+                <a (click)="deleteProductInFavorite(pro.productId)"><i class="fas fa-trash"></i></a>
+              </li>
+              <li>
+                <a href="#" [routerLink]="'/product-detail/' + pro.productId"
+                  ><i class="fa fa-retweet"></i
+                ></a>
+              </li>
+              <li>
+                <a href="#" routerLink="/cart"
+                  ><i class="fa fa-shopping-cart"></i
+                ></a>
+              </li>
+            </ul>
+          </div>
+          <div class="featured-item-text">
+            <h6>
+              <a href="#">{{pro.productName}}</a>
+            </h6>
+            <p>{{ formatPrice(pro.price) }}₫</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

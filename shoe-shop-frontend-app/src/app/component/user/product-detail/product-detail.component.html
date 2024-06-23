@@ -1,0 +1,625 @@
+<app-header></app-header>
+<section class="product-detail">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-6">
+        <div class="product-detail-pic">
+          <div class="product-detail-pic-item">
+            <lib-ngx-image-zoom
+              [thumbImage]="mainImage"
+              [fullImage]="mainImage"
+              zoomMode="hover-freeze"
+              [magnification]="2"
+              [enableScrollZoom]="true"
+              [enableLens]="true"
+              [lensWidth]="250"
+              [lensHeight]="250"
+            ></lib-ngx-image-zoom>
+            <!-- <img [src]="mainImage" alt="" style="width: 550px; height: 550px" /> -->
+          </div>
+          <div class="product-detail-pic-slider">
+            <swiper-container autoplay="true" slides-per-view="4">
+              <swiper-slide *ngFor="let slider of productImage">
+                <img
+                  src="{{ slider }}"
+                  alt=""
+                  style="width: 120px; height: 120px"
+                />
+              </swiper-slide>
+            </swiper-container>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6">
+        <form>
+          <input type="hidden" [value]="productId" />
+          <div class="product-detail-text">
+            <h3>{{ productName }}{{ sizeName }}</h3>
+            <div class="product-detail-rating">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star-half-alt"></i>
+              <span>({{countReview}} đánh giá)</span>
+            </div>
+            <div class="product-detail-price">
+              {{ formatNumber(productPrice) }}₫
+            </div>
+            <p>
+              {{ productDescription }}
+            </p>
+            <div class="product-detail-quantity">
+              <div class="pro-qty">
+                <span class="dec qtybtn" (click)="onDescQty()">-</span>
+                <input
+                  type="text"
+                  [(ngModel)]="quantity"
+                  name="quantity"
+                  value="1"
+                />
+                <span class="inc qtybtn" (click)="onAscQty()">+</span>
+              </div>
+            </div>
+            <div class="product-size">
+              <p *ngIf="productQuantity == -1">Size:</p>
+              <p *ngIf="productQuantity !== -1">
+                Size: Còn {{ productQuantity }} sản phẩm
+              </p>
+              <label *ngFor="let size of productSize" style="cursor: pointer">
+                <input
+                  type="radio"
+                  name="size"
+                  [value]="size.id"
+                  [checked]="' Size ' + size.name === sizeName ? 'checked' : ''"
+                  (change)="findQuantityBySize(size.id)"
+                />
+                <span>{{ size.name }}</span>
+              </label>
+            </div>
+
+            <a class="primary-btn" (click)="addProductInCart()"
+              >Thêm vào giỏ hàng</a
+            >
+            <a href="#" class="heart-icon">
+              <span class="far fa-heart"></span>
+            </a>
+            <ul>
+              <li><b>Sẵn có</b> <span>Còn trong kho</span></li>
+              <li>
+                <b>Vận chuyển</b>
+                <span>01 ngày vận chuyển. <samp>Free ship hôm nay</samp></span>
+              </li>
+              <li><b>Cân nặng</b> <span>0.5 kg</span></li>
+              <li>
+                <b>Chia sẻ với</b>
+                <div class="share">
+                  <a href="#"><i class="fab fa-facebook-f"></i></a>
+                  <a href="#"><i class="fab fa-twitter"></i></a>
+                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </form>
+      </div>
+      <div class="col-lg-12">
+        <div class="product-detail-tab">
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                data-toggle="tab"
+                href="#tabs-1"
+                role="tab"
+                aria-selected="true"
+                >Description</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-toggle="tab"
+                href="#tabs-2"
+                role="tab"
+                aria-selected="false"
+                >Information</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-toggle="tab"
+                href="#tabs-3"
+                role="tab"
+                aria-selected="false"
+                >Reviews <span>({{countReview}})</span></a
+              >
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tabs-1" role="tabpanel">
+              <div class="product-detail-tab-desc">
+                <h6>Products Infomation</h6>
+                <p>
+                  {{ productDescription }}
+                </p>
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-2" role="tabpanel">
+              <div class="product-detail-tab-desc">
+                <h6>Products Infomation</h6>
+                <p>
+                  Vestibulum ac diam sit amet quam vehicula elementum sed sit
+                  amet dui. Pellentesque in ipsum id orci porta dapibus. Proin
+                  eget tortor risus. Vivamus suscipit tortor eget felis
+                  porttitor volutpat. Vestibulum ac diam sit amet quam vehicula
+                  elementum sed sit amet dui. Donec rutrum congue leo eget
+                  malesuada. Vivamus suscipit tortor eget felis porttitor
+                  volutpat. Curabitur arcu erat, accumsan id imperdiet et,
+                  porttitor at sem. Praesent sapien massa, convallis a
+                  pellentesque nec, egestas non nisi. Vestibulum ac diam sit
+                  amet quam vehicula elementum sed sit amet dui. Vestibulum ante
+                  ipsum primis in faucibus orci luctus et ultrices posuere
+                  cubilia Curae; Donec velit neque, auctor sit amet aliquam vel,
+                  ullamcorper sit amet ligula. Proin eget tortor risus.
+                </p>
+                <p>
+                  Praesent sapien massa, convallis a pellentesque nec, egestas
+                  non nisi. Lorem ipsum dolor sit amet, consectetur adipiscing
+                  elit. Mauris blandit aliquet elit, eget tincidunt nibh
+                  pulvinar a. Cras ultricies ligula sed magna dictum porta. Cras
+                  ultricies ligula sed magna dictum porta. Sed porttitor lectus
+                  nibh. Mauris blandit aliquet elit, eget tincidunt nibh
+                  pulvinar a.
+                </p>
+              </div>
+            </div>
+            <div class="tab-pane" id="tabs-3" role="tabpanel">
+              <div class="product-detail-tab-desc">
+                <div class="pdp-mod-review">
+                  <div>
+                    <div class="mod-title">
+                      <h2 class="pdp-mod-section-title outer-title">
+                        Ratings &amp; Reviews of Giày Converse Chuck Taylor All
+                        Star
+                      </h2>
+                    </div>
+                    <div class="mod-rating">
+                      <div class="content">
+                        <div class="left">
+                          <div class="summary">
+                            <div class="score">
+                              <span class="score-average">{{this.sumRatingReview / this.countReview}}</span
+                              ><span class="score-max">/5</span>
+                            </div>
+                            <div class="average">
+                              <div
+                                class="container-star"
+                                style="width: 166.25px; height: 33.25px"
+                              >
+                                <img
+                                  class="star"
+                                  src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                  style="width: 33.25px; height: 33.25px"
+                                />
+                                <img
+                                  class="star"
+                                  src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                  style="width: 33.25px; height: 33.25px"
+                                />
+                                <img
+                                  class="star"
+                                  src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                  style="width: 33.25px; height: 33.25px"
+                                />
+                                <img
+                                  class="star"
+                                  src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                  style="width: 33.25px; height: 33.25px"
+                                />
+                                <img
+                                  class="star"
+                                  src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                  style="width: 33.25px; height: 33.25px"
+                                />
+                              </div>
+                            </div>
+                            <div class="count">{{countReview}} Đánh giá</div>
+                          </div>
+                          <div class="detail">
+                            <ul>
+                              <li>
+                                <div
+                                  class="container-star progress-title"
+                                  style="width: 79.8px; height: 15.96px"
+                                >
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                </div>
+                                <span class="progress-wrap">
+                                  <div class="pdp-review-progress">
+                                    <div class="bar bg"></div>
+                                    <div
+                                      class="bar fg"
+                                      [ngStyle]="{width: rating5Star / countReview * 100 + '%'}"
+                                    ></div>
+                                  </div>
+                                </span>
+                                <span class="percent">{{rating5Star}}</span>
+                              </li>
+                              <li>
+                                <div
+                                  class="container-star progress-title"
+                                  style="width: 79.8px; height: 15.96px"
+                                >
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                </div>
+                                <span class="progress-wrap">
+                                  <div class="pdp-review-progress">
+                                    <div class="bar bg"></div>
+                                    <div
+                                      class="bar fg"
+                                      [ngStyle]="{width: rating4Star / countReview * 100 + '%'}"
+                                    ></div>
+                                  </div>
+                                </span>
+                                <span class="percent">{{rating4Star}}</span>
+                              </li>
+                              <li>
+                                <div
+                                  class="container-star progress-title"
+                                  style="width: 79.8px; height: 15.96px"
+                                >
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                </div>
+                                <span class="progress-wrap">
+                                  <div class="pdp-review-progress">
+                                    <div class="bar bg"></div>
+                                    <div
+                                      class="bar fg"
+                                      [ngStyle]="{width: rating3Star / countReview * 100 + '%'}"
+                                    ></div>
+                                  </div>
+                                </span>
+                                <span class="percent">{{rating3Star}}</span>
+                              </li>
+                              <li>
+                                <div
+                                  class="container-star progress-title"
+                                  style="width: 79.8px; height: 15.96px"
+                                >
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                </div>
+                                <span class="progress-wrap">
+                                  <div class="pdp-review-progress">
+                                    <div class="bar bg"></div>
+                                    <div
+                                      class="bar fg"
+                                      [ngStyle]="{width: rating2Star / countReview * 100 + '%'}"
+                                    ></div>
+                                  </div>
+                                </span>
+                                <span class="percent">{{rating2Star}}</span>
+                              </li>
+                              <li>
+                                <div
+                                  class="container-star progress-title"
+                                  style="width: 79.8px; height: 15.96px"
+                                >
+                                  <img
+                                    class="star"
+                                    src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                                    style="width: 15.96px; height: 15.96px"
+                                  />
+                                </div>
+                                <span class="progress-wrap">
+                                  <div class="pdp-review-progress">
+                                    <div class="bar bg"></div>
+                                    <div
+                                      class="bar fg"
+                                      [ngStyle]="{width: rating1Star / countReview * 100 + '%'}"
+                                    ></div>
+                                  </div>
+                                </span>
+                                <span class="percent">{{rating1Star}}</span>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="pdp-mod-filterSort">
+                      <span class="title">Product Reviews</span>
+                      <div class="oper" (click)="onStatusFilterReview()">
+                        <img src="assets/images/icon-filter.svg" alt="" />
+                        <span>Filter:</span>
+                        <span class="condition">All star</span>
+                      </div>
+
+                      <div class="oper" (click)="onStatusSortReview()">
+                        <img src="assets/images/icon-sort.svg" alt="" />
+                        <span>Sort:</span>
+                        <span class="condition">Relevance</span>
+                      </div>
+                    </div>
+                    <div
+                      class="next-menu ver next-overlay-inner animated expandInDown next-position-tl"
+                      [ngStyle]="{display: statusFilterReview ? '':'none'}"
+                      style="position: absolute; left: 860px; top: 455px"
+                    >
+                      <ul class="next-menu-content">
+                        <li role="menuitem" class="next-menu-item">
+                          Relevance
+                        </li>
+                        <li role="menuitem" class="next-menu-item">Recent</li>
+                        <li role="menuitem" class="next-menu-item">
+                          Rating: High to Low
+                        </li>
+                        <li role="menuitem" class="next-menu-item">
+                          Rating: Low to High
+                        </li>
+                      </ul>
+                    </div>
+                    <div
+                      class="next-menu ver next-overlay-inner animated expandInDown next-position-tl"
+                      [ngStyle]="{display: statusSortReview ? '':'none'}"
+                      style="position: absolute; left: 1005px; top: 455px"
+                    >
+                      <ul class="next-menu-content">
+                        <li role="menuitem" class="next-menu-item">
+                          All stars
+                        </li>
+                        <li role="menuitem" class="next-menu-item">5 star</li>
+                        <li role="menuitem" class="next-menu-item">4 star</li>
+                        <li role="menuitem" class="next-menu-item">3 star</li>
+                        <li role="menuitem" class="next-menu-item">2 star</li>
+                        <li role="menuitem" class="next-menu-item">1 star</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="mod-reviews">
+                      <div class="item" *ngFor="let r of reviewList">
+                        <div class="top">
+                          <div
+                            class="container-star starCtn left"
+                            style="width: 83.125px; height: 16.625px"
+                          >
+                            <img
+                              class="star"
+                              src="//laz-img-cdn.alicdn.com/tfs/TB19ZvEgfDH8KJjy1XcXXcpdXXa-64-64.png"
+                              style="width: 16.625px; height: 16.625px"
+                              *ngFor="let rating of repeatRatingArray(r.rating)"
+                            />
+                          </div>
+                          <span class="title right">{{formatTimestamp(r.reviewTime)}}</span>
+                        </div>
+                        <div class="middle">
+                          <span>{{r.user.lastName + ' ' + r.user.firstName}}</span>
+                          <span>
+                            <img
+                              class="verifyImg"
+                              width="15"
+                              height="16"
+                              src="//lzd-img-global.slatic.net/g/tps/tfs/TB1bOqBeb_I8KJjy1XaXXbsxpXa-30-32.png"
+                            />
+                            <span class="verify">Verified Purchase</span>
+                          </span>
+                        </div>
+                        <div class="item-content">
+                          <div class="content">
+                            {{r.comment}}
+                          </div>
+                          <div class="review-image">
+                            <div class="review-image__list">
+                              <div class="pdp-common-image review-image__item">
+                                <div class="lazyload-wrapper">
+                                  <img
+                                    src="assets/images/product-detail/product/product-1.jpg"
+                                    alt=""
+                                    style="width: 94px; height: 94px"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="skuInfo">
+                            Nhóm màu:Màu {{r.productDetail.color.name}}, Kích thước: {{r.productDetail.size.name}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="related-product">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="section-title related-product-title">
+          <h2>Related Product</h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-item">
+          <div class="product-item-pic set-bg">
+            <img
+              src="/assets/images/product-detail/product/product-1.jpg"
+              alt=""
+            />
+            <ul class="product-item-pic-hover">
+              <li>
+                <a href="#"><i class="fa fa-heart"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-retweet"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-shopping-cart"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="product-item-text">
+            <h6><a href="#">Crab Pool Security</a></h6>
+            <h5>$30.00</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-item">
+          <div class="product-item-pic set-bg">
+            <img
+              src="/assets/images/product-detail/product/product-2.jpg"
+              alt=""
+            />
+            <ul class="product-item-pic-hover">
+              <li>
+                <a href="#"><i class="fa fa-heart"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-retweet"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-shopping-cart"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="product-item-text">
+            <h6><a href="#">Crab Pool Security</a></h6>
+            <h5>$30.00</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-item">
+          <div class="product-item-pic set-bg">
+            <img
+              src="/assets/images/product-detail/product/product-3.jpg"
+              alt=""
+            />
+            <ul class="product-item-pic-hover">
+              <li>
+                <a href="#"><i class="fa fa-heart"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-retweet"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-shopping-cart"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="product-item-text">
+            <h6><a href="#">Crab Pool Security</a></h6>
+            <h5>$30.00</h5>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="product-item">
+          <div class="product-item-pic set-bg">
+            <img
+              src="/assets/images/product-detail/product/product-7.jpg"
+              alt=""
+            />
+            <ul class="product-item-pic-hover">
+              <li>
+                <a href="#"><i class="fa fa-heart"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-retweet"></i></a>
+              </li>
+              <li>
+                <a href="#"><i class="fa fa-shopping-cart"></i></a>
+              </li>
+            </ul>
+          </div>
+          <div class="product-item-text">
+            <h6><a href="#">Crab Pool Security</a></h6>
+            <h5>$30.00</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

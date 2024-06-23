@@ -1,0 +1,229 @@
+<app-header></app-header>
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4>Địa chỉ nhận hàng</h4>
+        <h6>
+          {{ cart.user.lastName }} {{ cart.user.firstName }} -
+          {{ cart.user.phoneNumber }} -
+          <span *ngFor="let a of listAddress">
+            <span *ngIf="a.isDefault == true">
+              {{ a.location }}, Xã {{ a.wards }}, Huyện {{ a.district }},
+              {{ a.city }}
+            </span>
+          </span>
+          <span class="badge-default">Mặc định</span>
+          <span class="btn-address"
+            ><button type="button" data-toggle="modal" data-target="#myModal">
+              Thay đổi
+            </button></span
+          >
+        </h6>
+      </div>
+    </div>
+    <div class="checkout-form">
+      <h4>Thông tin thanh toán</h4>
+      <form action="#">
+        <div class="row">
+          <div class="col-lg-8 col-md-6">
+            <div class="shopping-cart-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="shopping-product">Sản Phẩm</th>
+                    <th>Giá</th>
+                    <th>Tổng Tiền</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let pro of listCartDetail">
+                    <td class="shopping-cart-item">
+                      <img
+                        [src]="
+                          getProductImage(
+                            pro.productDetail.id,
+                            pro.productDetail.mainImage
+                          )
+                        "
+                        alt=""
+                        style="width: 80px; height: 80px"
+                      />
+                      <div class="product-attributes">
+                        {{ pro.productDetail.product.name }}
+                        <p class="product-color">
+                          Màu {{ pro.productDetail.color.name }}
+                        </p>
+                        <p class="product-size">
+                          Size: {{ pro.productDetail.size.name }}
+                          <span>SL: {{ pro.quantity }}</span>
+                        </p>
+                      </div>
+                    </td>
+                    <td class="shopping-cart-price">
+                      {{ formatPrice(pro.price) }}₫
+                    </td>
+                    <td class="shopping-cart-total">
+                      {{ formatPrice(pro.price * pro.quantity) }}₫
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <br />
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <div class="checkout-order">
+              <h4>Đơn hàng</h4>
+              <div class="checkout-order-subtotal">
+                Tổng tiền hàng <span>{{ formatPrice(cart.total) }}₫</span>
+              </div>
+              <div class="checkout-order-shipping">
+                Phí vận chuyển <span>{{ formatPrice(shippingFee) }}₫</span>
+              </div>
+              <div class="checkout-order-shipping" *ngIf="promotion">
+                Khuyến mãi <span>{{ formatPrice(promotion.discountValue) }}₫</span>
+              </div>
+              <div class="checkout-order-total">
+                Tổng thanh toán
+                <span>{{ formatPrice(cart.total + shippingFee - promotion.discountValue) }}₫</span>
+              </div>
+
+              <div class="checkout-input">
+                <p>Ghi chú</p>
+                <textarea
+                  class="form-control"
+                  #note
+                  placeholder="Ghi chú cho shop nếu bạn muốn"
+                ></textarea>
+              </div>
+
+              <div
+                class="checkout-input-checkbox"
+                *ngFor="let p of listPaymentMethod"
+              >
+                <label>
+                  {{ p.name }}
+                  <input
+                    type="radio"
+                    name="pttt"
+                    [checked]="p.type === 0"
+                    (click)="selectPaymentMethod(p.id, p.type)"
+                  />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              <button
+                type="submit"
+                class="site-btn"
+                (click)="onPaymentOrder()"
+              >
+                Đặt hàng
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<!-- Checkout Section End -->
+<app-footer></app-footer>
+
+<!-- The Modal -->
+<div class="modal fade" id="myModal" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">{{ titleAddress }}</h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="address" *ngIf="switchAddress">
+          <div class="row">
+            <div class="user-info">
+              <span class="name"
+                >{{ cart.user.lastName }} {{ cart.user.firstName }}</span
+              >
+
+              <span class="contact">{{ cart.user.phoneNumber }}</span>
+            </div>
+          </div>
+          <div class="location" *ngFor="let a of listAddress">
+            <span>
+              <input
+                type="radio"
+                name="location"
+                [id]="a.id"
+                [value]="a.id"
+                [checked]="a.isDefault"
+                (change)="onChangeStatus(a.id)"
+              />
+              <label [for]="a.id"
+                >{{ a.location }} <br />
+                Xã {{ a.wards }}, Huyện {{ a.district }}, {{ a.city }}</label
+              >
+              <button (click)="onSwitchAddress(a.id)">Cập nhật</button>
+              <br />
+              <span class="badge-default" *ngIf="a.isDefault == true"
+                >Mặc định</span
+              >
+              <hr />
+            </span>
+          </div>
+          <button class="add-address" (click)="onSwitchAddress(0)">
+            <img src="assets/images/icon/icon-plus.svg" alt="" /> Thêm Địa Chỉ Mới
+          </button>
+        </div>
+
+        <form [formGroup]="formAddress" *ngIf="!switchAddress">
+          <input type="hidden" formControlName="id">
+          <div class="form-group">
+            <label>Xã/Phường</label>
+            <input type="text" class="form-control" formControlName="wards"/>
+          </div>
+          <div class="form-group">
+            <label>Huyện/Quận</label>
+            <input type="text" class="form-control" formControlName="district"/>
+          </div>
+          <div class="form-group">
+            <label>Tỉnh/Thành Phố</label>
+            <input type="text" class="form-control" formControlName="city"/>
+          </div>
+          <div class="form-group">
+            <label>Địa chỉ cụ thể</label>
+            <textarea cols="30" rows="3" class="form-control" formControlName="location"></textarea>
+          </div>
+          <div class="form-group default-address">
+            <input type="checkbox" id="status" value="true" formControlName="isDefault"/>
+            <label for="status">Đặt làm địa chỉ mặc định</label>
+          </div>
+
+          <div class="form-group" formGroupName="user">
+            <input type="hidden" formControlName="id"/>
+          </div>
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <div class="default" *ngIf="switchAddress">
+          <button type="button" class="btn-cancel" data-dismiss="modal">
+            Hủy
+          </button>
+          <button type="button" class="btn-confirm"
+          (click)="onUpdateStatus()">Xác nhận</button>
+        </div>
+        <div class="custom" *ngIf="!switchAddress">
+          <button type="button" class="btn-cancel" (click)="onSwitchAddress(0)">
+            Trở lại
+          </button>
+          <button type="button" class="btn-confirm" (click)="onAddress()">Hoàn thành</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

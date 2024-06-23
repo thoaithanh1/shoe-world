@@ -1,0 +1,105 @@
+<section class="header">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-2 left-bar">
+        <div class="menu-bar">
+          <div class="logo">
+            <a href="">
+              <img src="assets/images/logo.png" alt="" />
+            </a>
+          </div>
+          <div class="menu">
+            <ul>
+              <li>
+                <a href="" routerLink="product-management"
+                  ><img src="assets/images/icon/shoe.svg" alt="" /> Product</a
+                >
+              </li>
+              <li>
+                <a href="" routerLink="product-detail-management"
+                  ><img src="assets/images/icon/shoe1.svg" alt="" /> Product
+                  Detail</a
+                >
+              </li>
+              <li>
+                <a href="" routerLink="user-management"
+                  ><img src="assets/images/icon/user.svg" alt="" />User</a
+                >
+              </li>
+              <li class="dropdown main-dropdown">
+                <a
+                  href=""
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  ><img
+                    src="assets/images/icon/info.svg"
+                    alt=""
+                  />Thông tin giày</a
+                >
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#" routerLink="brand-management"><img src="assets/images/icon/brand.svg" alt="" />Thương Hiệu</a>
+                  <a class="dropdown-item" href="#" routerLink="category-management"><img src="assets/images/icon/category.svg" alt="" />Thể Loại</a>
+                  <a class="dropdown-item" href="#" routerLink="color-management"><img src="assets/images/icon/color.svg" alt="" />Màu Sắc</a>
+                  <a class="dropdown-item" href="#" routerLink="size-management"><img src="assets/images/icon/size.svg" alt="" />Kích Thước</a>
+                </div>
+              </li>
+              <li>
+                <a href="">
+                  <img src="assets/images/icon/dashboard.svg" alt="" />Thống kê</a
+                >
+              </li>
+              <li>
+                <a href=""
+                  ><img src="assets/images/icon/report.svg" alt="" />Báo cáo</a
+                >
+              </li>
+              <li>
+                <a href=""
+                  ><img src="assets/images/icon/order.svg" alt="" />Đơn hàng</a
+                >
+              </li>
+              <li>
+                <a href="" routerLink="promotion"
+                  ><img src="assets/images/icon/order.svg" alt="" />Khuyến mại</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-10 right-bar">
+        <ul class="main-header">
+          <li class="nav-item dropdown avatar">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <img src="assets/images/icon/user.svg" alt="profile" />
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item">
+                <i class="fas fa-cog"></i>
+                Settings
+              </a>
+              <a class="dropdown-item">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+              </a>
+            </div>
+          </li>
+          <li class="nav-item dropdown bell">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown">
+              <i class="far fa-bell fa-lg"></i>
+              <span class="count"></span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <a class="dropdown-item" href="#">Link 1</a>
+              <a class="dropdown-item" href="#">Link 2</a>
+              <a class="dropdown-item" href="#">Link 3</a>
+            </div>
+          </li>
+        </ul>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</section>

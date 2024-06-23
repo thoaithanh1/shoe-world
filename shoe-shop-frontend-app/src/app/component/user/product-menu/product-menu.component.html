@@ -1,0 +1,282 @@
+<app-header></app-header>
+<section class="hero">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="hero-categories">
+          <div class="hero-categories-all" (click)="toggleCategories()">
+            <i class="fa fa-bars"></i>
+            <span>All departments</span>
+          </div>
+          <ul>
+            <li><a href="#">Fresh Meat</a></li>
+            <li><a href="#">Vegetables</a></li>
+            <li><a href="#">Fruit & Nut Gifts</a></li>
+            <li><a href="#">Fresh Berries</a></li>
+            <li><a href="#">Ocean Foods</a></li>
+            <li><a href="#">Butter & Eggs</a></li>
+            <li><a href="#">Fastfood</a></li>
+            <li><a href="#">Fresh Onion</a></li>
+            <li><a href="#">Papayaya & Crisps</a></li>
+            <li><a href="#">Oatmeal</a></li>
+            <li><a href="#">Fresh Bananas</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="hero-search">
+          <div class="hero-search-form">
+            <form action="#">
+              <div class="hero-search-categories">
+                All Categories
+                <span class="fas fa-angle-down"></span>
+              </div>
+              <input type="search" #keyword value="" placeholder="What do you need?" />
+              <button type="submit" class="site-btn" (click)="filterProduct()">SEARCH</button>
+            </form>
+          </div>
+          <div class="hero-search-phone">
+            <div class="hero-search-phone-icon">
+              <i class="fa fa-phone"></i>
+            </div>
+            <div class="hero-search-phone-text">
+              <h5>+84 969.951.201</h5>
+              <span>support 24/7 time</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="product spad">
+  <div class="container">
+    <form action="" [formGroup]="formProductFilter">
+      <div class="row">
+        <div class="col-lg-3 col-md-5">
+          <div class="sidebar">
+            <div class="sidebar-item">
+              <h4>Bộ lọc</h4>
+
+              <div class="product-info-detailed">
+                <div
+                  class="item"
+                  [ngClass]="{ active: statusSize }"
+                  (click)="onStatusSize()"
+                >
+                  <div class="item-title">Lọc theo kích thước</div>
+                  <div class="item-content">
+                    <div class="form-group" *ngFor="let size of listSize">
+                      <input
+                        type="checkbox"
+                        [value]="size.id"
+                        [id]="size.id"
+                        (change)="onCheckChangeSize($event)"
+                      />
+                      <label [for]="size.id">{{ size.name }}</label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="item"
+                  [ngClass]="{ active: statusBrand }"
+                  (click)="onStatusBrand()"
+                >
+                  <div class="item-title">Lọc theo nhãn hiệu</div>
+                  <div class="item-content">
+                    <div class="form-group" *ngFor="let brand of listBrand">
+                      <input
+                        type="checkbox"
+                        [value]="brand.id"
+                        [id]="brand.name"
+                        (change)="onCheckChangeBrand($event)"
+                      />
+                      <label [for]="brand.name">{{ brand.name }}</label>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="item"
+                  [ngClass]="{ active: statusGender }"
+                  (click)="onStatusGender()"
+                >
+                  <div class="item-title">Lọc theo giới tính</div>
+                  <div class="item-content">
+                    <div class="form-gender">
+                      <input
+                        type="radio"
+                        value="0"
+                        id="male"
+                        name="gender"
+                        (click)="filterProduct()"
+                        formControlName="gender"
+                      />
+                      <label for="male">Nam</label>
+                    </div>
+                    <div class="form-gender">
+                      <input
+                        type="radio"
+                        value="1"
+                        id="female"
+                        name="gender"
+                        (click)="filterProduct()"
+                        formControlName="gender"
+                      />
+                      <label for="female">Nữ</label>
+                    </div>
+                    <div class="form-gender">
+                      <input
+                        type="radio"
+                        value="2"
+                        id="unisex"
+                        name="gender"
+                        (click)="filterProduct()"
+                        formControlName="gender"
+                      />
+                      <label for="unisex">Unisex</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="range-input">
+              <input
+                type="range"
+                min="0"
+                max="15000000"
+                step="100000"
+                [(ngModel)]="moneyMin"
+                value="0"
+                formControlName="minPrice"
+                class="slider"
+                id="lower"
+              />
+              <input
+                type="range"
+                min="0"
+                max="15000000"
+                step="100000"
+                [(ngModel)]="moneyMax"
+                value="15000000"
+                formControlName="maxPrice"
+                class="slider"
+                id="higher"
+              />
+            </div>
+            <div class="filter">
+              Giá {{ formatNumber(moneyMin) }}₫ - {{ formatNumber(moneyMax) }}₫
+            </div>
+            <div class="btn-filter">
+              <button class="filter" (click)="filterProduct()">Lọc</button>
+              <button class="clear" (click)="getPageProductDisplayHome(0)">
+                Xóa tất cả
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-7">
+          <div class="filter-item">
+            <div class="row">
+              <div class="col-lg-4 col-md-5">
+                <div class="filter-sort">
+                  <span>Sort By</span>
+                  <select formControlName="orderBy">
+                    <option value="newest" (click)="filterProduct()">
+                      Mới nhất
+                    </option>
+                    <option value="min-to-max" (click)="filterProduct()">
+                      Thứ tự theo giá: thấp đến cao
+                    </option>
+                    <option value="max-to-min" (click)="filterProduct()">
+                      Thứ tự theo giá: cao đến thấp
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-4">
+                <div class="filter-found">
+                  <h6>
+                    <span>{{ totalElements }}</span> Sản phẩm tìm thấy
+                  </h6>
+                </div>
+              </div>
+              <div class="col-lg-4 col-md-3">
+                <div class="filter-option">
+                  <span class="fas fa-th-large"></span>
+                  <span class="fas fa-list-ul"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div
+              class="col-lg-4 col-md-6 col-sm-6"
+              *ngFor="let pro of pageProducts"
+            >
+              <div class="product-item">
+                <div class="product-item-pic set-bg">
+                  <a href="" [routerLink]="'/product-detail/' + pro.productId"
+                    ><img
+                      [src]="getImageProduct(pro.productId, pro.productImage)"
+                      loading="lazy"
+                      alt=""
+                      style="width: 270px; height: 270px"
+                  /></a>
+                  <ul class="product-item-pic-hover">
+                    <li>
+                      <a href="#"><i class="fa fa-heart"></i></a>
+                    </li>
+                    <li>
+                      <a
+                        href="#"
+                        [routerLink]="'/product-detail/' + pro.productId"
+                        ><i class="fa fa-retweet"></i
+                      ></a>
+                    </li>
+                    <li>
+                      <a href="#"><i class="fa fa-shopping-cart"></i></a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="product-item-text">
+                  <h6>
+                    <a href="#">{{ pro.productName }}</a>
+                  </h6>
+                  <h5>{{ formatNumber(pro.price) }}₫</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ul class="page">
+            <li
+              class="page-btn"
+              [ngClass]="currentPage == 0 ? 'active' : ''"
+              (click)="previousPage()"
+            >
+              <i class="fas fa-chevron-left"></i>
+            </li>
+
+            <li
+              class="page-numbers"
+              *ngFor="let p of totalPagesArray"
+              [ngClass]="currentPage == p - 1 ? 'active' : ''"
+              (click)="switchPage(p - 1)"
+            >
+              {{ p }}
+            </li>
+
+            <li
+              class="page-btn"
+              [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+              (click)="nextPage()"
+            >
+              <i class="fas fa-chevron-right"></i>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+<app-footer></app-footer>

@@ -1,0 +1,930 @@
+<section class="main">
+  <div class="container">
+    <div class="card shadow d-flex justify-content-center mt-3">
+      <!-- nav options -->
+      <ul class="nav nav-pills mb-3 shadow-sm" id="pills-tab" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="pills-all-tab"
+            data-toggle="pill"
+            href="#pills-all"
+            role="tab"
+            aria-controls="pills-all"
+            aria-selected="true"
+            (click)="getOrderByStatusSwitchTab(0)"
+            >Tất cả</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="pills-processing-tab"
+            data-toggle="pill"
+            href="#pills-processing"
+            role="tab"
+            aria-controls="pills-processing"
+            aria-selected="false"
+            (click)="getOrderByStatusSwitchTab(1)"
+            >Chờ xử lý</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="pills-shipping-tab"
+            data-toggle="pill"
+            href="#pills-shipping"
+            role="tab"
+            aria-controls="pills-shipping"
+            aria-selected="false"
+            (click)="getOrderByStatusSwitchTab(2)"
+            >Đang giao</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="pills-success-tab"
+            data-toggle="pill"
+            href="#pills-success"
+            role="tab"
+            aria-controls="pills-success"
+            aria-selected="false"
+            (click)="getOrderByStatusSwitchTab(3)"
+            >Hoàn thành</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            id="pills-cancelled-tab"
+            data-toggle="pill"
+            href="#pills-cancelled"
+            role="tab"
+            aria-controls="pills-cancelled"
+            aria-selected="false"
+            (click)="getOrderByStatusSwitchTab(4)"
+            >Đã hủy</a
+          >
+        </li>
+      </ul>
+      <!-- content -->
+      <div class="tab-content" id="pills-tabContent p-3">
+        <!-- All Order -->
+        <div
+          class="tab-pane fade show active"
+          id="pills-all"
+          role="tabpanel"
+          aria-labelledby="pills-all-tab"
+        >
+          <div class="order">
+            <div class="order-search">
+              <span class="search">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Tìm theo mã, sđt người dùng"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searchOrderByCodeAndPhoneNumber(0)"
+                />
+              </span>
+              <span class="date">
+                <select class="form-control" (change)="getOrderByDate($event)">
+                  <option value="3">Chọn</option>
+                  <option value="1">Hôm nay</option>
+                  <option value="2">Tuần này</option>
+                  <option value="3">Tháng này</option>
+                </select>
+              </span>
+              <span class="status">
+                <select
+                  class="form-control select"
+                  (change)="changeStatusOrderUpdate($event)"
+                >
+                  <option
+                    value="1"
+                    [selected]="statusOrderSelected == 1"
+                    [disabled]="
+                      statusOrderSelected == 1 ||
+                      statusOrderSelected == 2 ||
+                      statusOrderSelected == 3
+                    "
+                  >
+                    Đang xử lý
+                  </option>
+                  <option
+                    value="2"
+                    [selected]="statusOrderSelected == 2"
+                    [disabled]="
+                      statusOrderSelected == 2 ||
+                      statusOrderSelected == 3 ||
+                      statusOrderSelected == 4
+                    "
+                  >
+                    Đang vận chuyển
+                  </option>
+                  <option
+                    value="3"
+                    [selected]="statusOrderSelected == 3"
+                    [disabled]="
+                      statusOrderSelected == 3 || statusOrderSelected == 4
+                    "
+                  >
+                    Hoàn thành
+                  </option>
+                  <option
+                    value="4"
+                    [selected]="statusOrderSelected == 4"
+                    [disabled]="
+                      statusOrderSelected == 3 || statusOrderSelected == 4
+                    "
+                  >
+                    Đã hủy
+                  </option>
+                </select>
+                <button class="btn-apply" (click)="getSelectedOrder()">
+                  Áp dụng
+                </button>
+              </span>
+            </div>
+            <table class="table table-responsive table-order">
+              <thead>
+                <tr>
+                  <th class="choose-order">
+                    <input
+                      type="checkbox"
+                      [(ngModel)]="selectAllCheckbox"
+                      (change)="toggleSelectAll()"
+                    />
+                  </th>
+                  <th class="code-order">Đơn hàng</th>
+                  <th class="time-order">Ngày đặt</th>
+                  <th class="status-order">Tình trạng</th>
+                  <th class="amount-price-order">Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of listOrder">
+                  <td class="choose-order">
+                    <input
+                      type="checkbox"
+                      [value]="o.id"
+                      [(ngModel)]="o.selected"
+                      (change)="checkboxChanged()"
+                    />
+                  </td>
+                  <td class="code-order">
+                    <a
+                      href=""
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      #{{ o.code }} -
+                      {{ o.user.lastName + " " + o.user.firstName }}
+                    </a>
+
+                    <a
+                      href="#"
+                      class="order-detail"
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="time-order">
+                    {{ formatTimestamp(o.createdDate) }}
+                  </td>
+                  <td class="status-order">
+                    <div class="badge badge-secondary" *ngIf="o.status == 1">
+                      Đang xử lý
+                    </div>
+                    <div class="badge badge-primary" *ngIf="o.status == 2">
+                      Đang vận chuyển
+                    </div>
+                    <div class="badge badge-success" *ngIf="o.status == 3">
+                      Giao hàng thành công
+                    </div>
+                    <div class="badge badge-dark" *ngIf="o.status == 4">
+                      Đã hủy
+                    </div>
+                  </td>
+                  <td class="amount-price-order">
+                    {{ formatPrice(o.shippingFee + o.total) }}₫
+                  </td>
+                </tr>
+              </tbody>
+              <div class="empty-list-order" *ngIf="emptyListOrder">
+                <img src="assets/images/history-order-empty.png" alt="" />
+              </div>
+            </table>
+
+            <ul class="page" *ngIf="!emptyListOrder">
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == 0 ? 'active' : ''"
+                (click)="previousPage()"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </li>
+
+              <li
+                class="page-numbers"
+                *ngFor="let p of totalPagesArray"
+                [ngClass]="currentPage == p - 1 ? 'active' : ''"
+                (click)="switchPage(p - 1)"
+              >
+                {{ p }}
+              </li>
+
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+                (click)="nextPage()"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Pending Order -->
+        <div
+          class="tab-pane fade"
+          id="pills-processing"
+          role="tabpanel"
+          aria-labelledby="pills-processing-tab"
+        >
+          <div class="order">
+            <div class="order-search">
+              <span class="search">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Tìm theo mã, sđt người dùng"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searchOrderByCodeAndPhoneNumber(1)"
+                />
+              </span>
+              <span class="date">
+                <select class="form-control" (change)="getOrderByDate($event)">
+                  <option value="3">Chọn</option>
+                  <option value="1">Hôm nay</option>
+                  <option value="2">Tuần này</option>
+                  <option value="3">Tháng này</option>
+                </select>
+              </span>
+              <span class="status">
+                <select class="form-control select">
+                  <option value="">Tác vụ</option>
+                  <option value="">Đang xử lý</option>
+                  <option value="">Đang vận chuyển</option>
+                  <option value="">Giao thành công</option>
+                  <option value="">Hủy đơn hàng</option>
+                </select>
+                <button class="btn-apply">Áp dụng</button>
+              </span>
+            </div>
+            <table class="table table-responsive table-order">
+              <thead>
+                <tr>
+                  <th class="choose-order">
+                    <input type="checkbox" />
+                  </th>
+                  <th class="code-order">Đơn hàng</th>
+                  <th class="time-order">Ngày đặt</th>
+                  <th class="status-order">Tình trạng</th>
+                  <th class="amount-price-order">Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of listOrder">
+                  <td class="choose-order">
+                    <input type="checkbox" />
+                  </td>
+                  <td class="code-order">
+                    <a
+                      href=""
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      #{{ o.code }} -
+                      {{ o.user.lastName + " " + o.user.firstName }}
+                    </a>
+
+                    <a
+                      href="#"
+                      class="order-detail"
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="time-order">
+                    {{ formatTimestamp(o.createdDate) }}
+                  </td>
+                  <td class="status-order">
+                    <div class="badge badge-secondary" *ngIf="o.status == 1">
+                      Đang xử lý
+                    </div>
+                    <div class="badge badge-primary" *ngIf="o.status == 2">
+                      Đang vận chuyển
+                    </div>
+                    <div class="badge badge-success" *ngIf="o.status == 3">
+                      Giao hàng thành công
+                    </div>
+                    <div class="badge badge-dark" *ngIf="o.status == 4">
+                      Đã hủy
+                    </div>
+                  </td>
+                  <td class="amount-price-order">
+                    {{ formatPrice(o.shippingFee + o.total) }}₫
+                  </td>
+                </tr>
+              </tbody>
+              <div class="empty-list-order" *ngIf="emptyListOrder">
+                <img src="assets/images/history-order-empty.png" alt="" />
+              </div>
+            </table>
+
+            <ul class="page" *ngIf="!emptyListOrder">
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == 0 ? 'active' : ''"
+                (click)="previousPage()"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </li>
+
+              <li
+                class="page-numbers"
+                *ngFor="let p of totalPagesArray"
+                [ngClass]="currentPage == p - 1 ? 'active' : ''"
+                (click)="switchPage(p - 1)"
+              >
+                {{ p }}
+              </li>
+
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+                (click)="nextPage()"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Shipping Order -->
+        <div
+          class="tab-pane fade third"
+          id="pills-shipping"
+          role="tabpanel"
+          aria-labelledby="pills-shipping-tab"
+        >
+          <div class="order">
+            <div class="order-search">
+              <span class="search">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Tìm theo mã, sđt người dùng"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searchOrderByCodeAndPhoneNumber(2)"
+                />
+              </span>
+              <span class="date">
+                <select class="form-control" (change)="getOrderByDate($event)">
+                  <option value="3">Chọn</option>
+                  <option value="1">Hôm nay</option>
+                  <option value="2">Tuần này</option>
+                  <option value="3">Tháng này</option>
+                </select>
+              </span>
+              <span class="status">
+                <select class="form-control select">
+                  <option value="">Tác vụ</option>
+                  <option value="">Đang xử lý</option>
+                  <option value="">Đang vận chuyển</option>
+                  <option value="">Giao thành công</option>
+                  <option value="">Hủy đơn hàng</option>
+                </select>
+                <button class="btn-apply">Áp dụng</button>
+              </span>
+            </div>
+            <table class="table table-responsive table-order">
+              <thead>
+                <tr>
+                  <th class="choose-order">
+                    <input type="checkbox" />
+                  </th>
+                  <th class="code-order">Đơn hàng</th>
+                  <th class="time-order">Ngày đặt</th>
+                  <th class="status-order">Tình trạng</th>
+                  <th class="amount-price-order">Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of listOrder">
+                  <td class="choose-order">
+                    <input type="checkbox" [value]="o.id" />
+                  </td>
+                  <td class="code-order">
+                    <a
+                      href=""
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      #{{ o.code }} -
+                      {{ o.user.lastName + " " + o.user.firstName }}
+                    </a>
+
+                    <a
+                      href="#"
+                      class="order-detail"
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="time-order">
+                    {{ formatTimestamp(o.createdDate) }}
+                  </td>
+                  <td class="status-order">
+                    <div class="badge badge-secondary" *ngIf="o.status == 1">
+                      Đang xử lý
+                    </div>
+                    <div class="badge badge-primary" *ngIf="o.status == 2">
+                      Đang vận chuyển
+                    </div>
+                    <div class="badge badge-success" *ngIf="o.status == 3">
+                      Giao hàng thành công
+                    </div>
+                    <div class="badge badge-dark" *ngIf="o.status == 4">
+                      Đã hủy
+                    </div>
+                  </td>
+                  <td class="amount-price-order">
+                    {{ formatPrice(o.shippingFee + o.total) }}₫
+                  </td>
+                </tr>
+              </tbody>
+              <div class="empty-list-order" *ngIf="emptyListOrder">
+                <img src="assets/images/history-order-empty.png" alt="" />
+              </div>
+            </table>
+
+            <ul class="page" *ngIf="!emptyListOrder">
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == 0 ? 'active' : ''"
+                (click)="previousPage()"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </li>
+
+              <li
+                class="page-numbers"
+                *ngFor="let p of totalPagesArray"
+                [ngClass]="currentPage == p - 1 ? 'active' : ''"
+                (click)="switchPage(p - 1)"
+              >
+                {{ p }}
+              </li>
+
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+                (click)="nextPage()"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Success Order -->
+        <div
+          class="tab-pane fade third"
+          id="pills-success"
+          role="tabpanel"
+          aria-labelledby="pills-success-tab"
+        >
+          <div class="order">
+            <div class="order-search">
+              <span class="search">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Tìm theo mã, sđt người dùng"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searchOrderByCodeAndPhoneNumber(3)"
+                />
+              </span>
+              <span class="date">
+                <select class="form-control" (change)="getOrderByDate($event)">
+                  <option value="3">Chọn</option>
+                  <option value="1">Hôm nay</option>
+                  <option value="2">Tuần này</option>
+                  <option value="3">Tháng này</option>
+                </select>
+              </span>
+              <span class="status">
+                <select class="form-control select">
+                  <option value="">Tác vụ</option>
+                  <option value="">Đang xử lý</option>
+                  <option value="">Đang vận chuyển</option>
+                  <option value="">Giao thành công</option>
+                  <option value="">Hủy đơn hàng</option>
+                </select>
+                <button class="btn-apply">Áp dụng</button>
+              </span>
+            </div>
+            <table class="table table-responsive table-order">
+              <thead>
+                <tr>
+                  <th class="choose-order">
+                    <input type="checkbox" />
+                  </th>
+                  <th class="code-order">Đơn hàng</th>
+                  <th class="time-order">Ngày đặt</th>
+                  <th class="status-order">Tình trạng</th>
+                  <th class="amount-price-order">Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of listOrder">
+                  <td class="choose-order">
+                    <input type="checkbox" [value]="o.id" />
+                  </td>
+                  <td class="code-order">
+                    <a
+                      href=""
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      #{{ o.code }} -
+                      {{ o.user.lastName + " " + o.user.firstName }}
+                    </a>
+
+                    <a
+                      href="#"
+                      class="order-detail"
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="time-order">
+                    {{ formatTimestamp(o.createdDate) }}
+                  </td>
+                  <td class="status-order">
+                    <div class="badge badge-secondary" *ngIf="o.status == 1">
+                      Đang xử lý
+                    </div>
+                    <div class="badge badge-primary" *ngIf="o.status == 2">
+                      Đang vận chuyển
+                    </div>
+                    <div class="badge badge-success" *ngIf="o.status == 3">
+                      Giao hàng thành công
+                    </div>
+                    <div class="badge badge-dark" *ngIf="o.status == 4">
+                      Đã hủy
+                    </div>
+                  </td>
+                  <td class="amount-price-order">
+                    {{ formatPrice(o.shippingFee + o.total) }}₫
+                  </td>
+                </tr>
+              </tbody>
+              <div class="empty-list-order" *ngIf="emptyListOrder">
+                <img src="assets/images/history-order-empty.png" alt="" />
+              </div>
+            </table>
+
+            <ul class="page" *ngIf="!emptyListOrder">
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == 0 ? 'active' : ''"
+                (click)="previousPage()"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </li>
+
+              <li
+                class="page-numbers"
+                *ngFor="let p of totalPagesArray"
+                [ngClass]="currentPage == p - 1 ? 'active' : ''"
+                (click)="switchPage(p - 1)"
+              >
+                {{ p }}
+              </li>
+
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+                (click)="nextPage()"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Cancelled Order -->
+        <div
+          class="tab-pane fade third"
+          id="pills-cancelled"
+          role="tabpanel"
+          aria-labelledby="pills-cancelled-tab"
+        >
+          <div class="order">
+            <div class="order-search">
+              <span class="search">
+                <input
+                  type="search"
+                  class="form-control"
+                  placeholder="Tìm theo mã, sđt người dùng"
+                  [(ngModel)]="keyword"
+                  (keyup.enter)="searchOrderByCodeAndPhoneNumber(4)"
+                />
+              </span>
+              <span class="date">
+                <select class="form-control" (change)="getOrderByDate($event)">
+                  <option value="3">Chọn</option>
+                  <option value="1">Hôm nay</option>
+                  <option value="2">Tuần này</option>
+                  <option value="3">Tháng này</option>
+                </select>
+              </span>
+              <span class="status">
+                <select class="form-control select">
+                  <option value="">Tác vụ</option>
+                  <option value="">Đang xử lý</option>
+                  <option value="">Đang vận chuyển</option>
+                  <option value="">Giao thành công</option>
+                  <option value="">Hủy đơn hàng</option>
+                </select>
+                <button class="btn-apply">Áp dụng</button>
+              </span>
+            </div>
+            <table class="table table-responsive table-order">
+              <thead>
+                <tr>
+                  <th class="choose-order">
+                    <input type="checkbox" />
+                  </th>
+                  <th class="code-order">Đơn hàng</th>
+                  <th class="time-order">Ngày đặt</th>
+                  <th class="status-order">Tình trạng</th>
+                  <th class="amount-price-order">Tổng tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let o of listOrder">
+                  <td class="choose-order">
+                    <input type="checkbox" [value]="o.id" />
+                  </td>
+                  <td class="code-order">
+                    <a
+                      href=""
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      #{{ o.code }} -
+                      {{ o.user.lastName + " " + o.user.firstName }}
+                    </a>
+
+                    <a
+                      href="#"
+                      class="order-detail"
+                      data-toggle="modal"
+                      data-target="#modalOrder"
+                      (click)="getOrderDetails(o.id)"
+                    >
+                      <i class="fa-regular fa-eye"></i>
+                    </a>
+                  </td>
+                  <td class="time-order">
+                    {{ formatTimestamp(o.createdDate) }}
+                  </td>
+                  <td class="status-order">
+                    <div class="badge badge-secondary" *ngIf="o.status == 1">
+                      Đang xử lý
+                    </div>
+                    <div class="badge badge-primary" *ngIf="o.status == 2">
+                      Đang vận chuyển
+                    </div>
+                    <div class="badge badge-success" *ngIf="o.status == 3">
+                      Giao hàng thành công
+                    </div>
+                    <div class="badge badge-dark" *ngIf="o.status == 4">
+                      Đã hủy
+                    </div>
+                  </td>
+                  <td class="amount-price-order">
+                    {{ formatPrice(o.shippingFee + o.total) }}₫
+                  </td>
+                </tr>
+              </tbody>
+              <div class="empty-list-order" *ngIf="emptyListOrder">
+                <img src="assets/images/history-order-empty.png" alt="" />
+              </div>
+            </table>
+
+            <ul class="page" *ngIf="!emptyListOrder">
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == 0 ? 'active' : ''"
+                (click)="previousPage()"
+              >
+                <i class="fas fa-chevron-left"></i>
+              </li>
+
+              <li
+                class="page-numbers"
+                *ngFor="let p of totalPagesArray"
+                [ngClass]="currentPage == p - 1 ? 'active' : ''"
+                (click)="switchPage(p - 1)"
+              >
+                {{ p }}
+              </li>
+
+              <li
+                class="page-btn"
+                [ngClass]="currentPage == totalPages - 1 ? 'active' : ''"
+                (click)="nextPage()"
+              >
+                <i class="fas fa-chevron-right"></i>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal fade" id="modalOrder">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Sửa đơn hàng</h4>
+        <button type="button" class="close btn-close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="user-info">
+          <div class="container">
+            <div class="title">
+              <div class="code-order">
+                <input type="hidden" [value]="infoOrder.id" #orderId />
+                Đơn hàng #{{ infoOrder.code }} chi tiết
+              </div>
+              <p class="payment-method">{{ infoOrder.paymentMethod }}</p>
+            </div>
+            <div class="row">
+              <div class="col-4">
+                <h5>Chung</h5>
+                <div class="form-group">
+                  <label>Ngày tạo:</label>
+                  <span>{{ formatTimestamp(infoOrder.createdDate) }}</span>
+                </div>
+                <div class="form-group">
+                  <label>Trạng thái:</label>
+                  <select
+                    name=""
+                    id=""
+                    class="form-control"
+                    (change)="getStatusOrder($event)"
+                  >
+                    <option
+                      value="1"
+                      [selected]="infoOrder.status == 1"
+                      [disabled]="
+                        infoOrder.status == 2 || infoOrder.status == 3
+                      "
+                    >
+                      Đang xử lý
+                    </option>
+                    <option
+                      value="2"
+                      [selected]="infoOrder.status == 2"
+                      [disabled]="
+                        infoOrder.status == 3 || infoOrder.status == 4
+                      "
+                    >
+                      Đang vận chuyển
+                    </option>
+                    <option
+                      value="3"
+                      [selected]="infoOrder.status == 3"
+                      [disabled]="infoOrder.status == 4"
+                    >
+                      Hoàn thành
+                    </option>
+                    <option
+                      value="4"
+                      [selected]="infoOrder.status == 4"
+                      [disabled]="infoOrder.status == 3"
+                    >
+                      Đã hủy
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-4">
+                <h5>Thanh toán</h5>
+                <div class="form-group">
+                  <label>Thông tin thanh toán:</label>
+                  <span>14/10/2023 14:28</span>
+                </div>
+                <div class="form-group">
+                  <label>Địa chỉ email:</label>
+                  <span>{{ infoOrder.email }}</span>
+                </div>
+                <div class="form-group">
+                  <label>Số điện thoại:</label>
+                  <span>{{ infoOrder.phoneNumber }}</span>
+                </div>
+              </div>
+              <div class="col-4">
+                <h5>Giao hàng</h5>
+                <div class="form-group">
+                  <label>Địa chỉ giao:</label>
+                  <span>{{ infoOrder.address }}</span>
+                </div>
+                <div class="form-group">
+                  <label>Ghi chú:</label>
+                  <span>{{ infoOrder.note }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="product-info">
+          <table class="table-product">
+            <thead>
+              <tr>
+                <th class="name">Sản phẩm</th>
+                <th class="price">Giá</th>
+                <th class="qty">Số lượng</th>
+                <th class="price">Tổng</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of listProductOrder">
+                <td class="name">
+                  <img
+                    [src]="getImageProduct(p.productDetailId, p.image)"
+                    alt=""
+                    loading="lazy"
+                    style="width: 50px; height: 50px"
+                  />
+                  {{ p.name + " Màu " + p.color + " Size " + p.size }}
+                </td>
+                <td class="price">{{ formatPrice(p.price) }}₫</td>
+                <td class="qty">{{ p.quantity }}</td>
+                <td class="price">{{ formatPrice(p.price * p.quantity) }}₫</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="order-fee">
+          <div class="form-group label">
+            <div>Tổng tiền hàng:</div>
+            <div>Phí vận chuyển:</div>
+            <div>Thành tiền:</div>
+          </div>
+          <div class="form-group value">
+            <div>{{ formatPrice(infoOrder.total) }}₫</div>
+            <div>{{ formatPrice(infoOrder.shippingFee) }}₫</div>
+            <div>
+              {{ formatPrice(infoOrder.total + infoOrder.shippingFee) }}₫
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-save" (click)="updateStatusOrder()">
+          <i class="fa-regular fa-floppy-disk"></i>&nbsp;Áp dụng
+        </button>
+        <button class="btn btn-cancel" data-dismiss="modal">
+          <i class="fa-solid fa-ban"></i>&nbsp;Hủy bỏ
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

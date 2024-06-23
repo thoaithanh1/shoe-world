@@ -1,0 +1,110 @@
+<header class="header">
+  <div class="header-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 col-md-6">
+          <div class="header-top-left">
+            <ul>
+              <li><i class="fa fa-envelope"></i> dohongkien2003@gmail.com</li>
+              <li>Free Shipping for all Order of $99</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-6">
+          <div class="header-top-right">
+            <div class="header-top-right-social">
+              <a href="https://github.com/DoHongKien" target="_blank"
+                ><i class="fab fa-github"></i></a>
+              <a
+                href="https://www.linkedin.com/in/ki%C3%AAn-%C4%91%E1%BB%97-h%E1%BB%93ng-237460268/"
+                target="_blank"
+                ><i class="fab fa-linkedin-in"></i></a>
+              <a
+                href="https://www.facebook.com/do.hongkien.2003"
+                target="_blank"
+                ><i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <div class="header-top-right-language">
+              <img src="assets/images/vietnam-flag-language.png" alt="" />
+              <div>Tiếng Việt</div>
+              <span class="fas fa-angle-down"></span>
+              <ul>
+                <li><a href="#">Tiếng Việt</a></li>
+                <li><a href="#">Tiếng Anh</a></li>
+              </ul>
+            </div>
+            <div class="header-top-right-auth" *ngIf="!isAuthenticated">
+              <a href="#" routerLink="/login"><i class="fa fa-user"></i> Đăng nhập</a>
+            </div>
+            <div class="header-top-right-auth" *ngIf="isAuthenticated">
+              <a href="#" (click)="loggout()">
+                <img [src]="getImageUser(this.userId, this.userAvatar)" alt="" style="width: 25px; height: 25px; border-radius: 50%;"> Đăng xuất
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="header-logo">
+          <a href=""><img src="/assets/images/logo.png" alt="" /></a>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="header-menu">
+          <ul>
+            <li><a href="" routerLink="/home">Home</a></li>
+            <li><a href="" routerLink="/product-menu">Shop</a></li>
+            <li>
+              <a href="">Pages</a>
+              <ul class="header-menu-dropdown">
+                <li>
+                  <a href="" routerLink="/product-detail">Shop Details</a>
+                </li>
+                <li><a href="" routerLink="/cart">Shopping Cart</a></li>
+                <li><a href="" routerLink="/checkout">Checkout</a></li>
+                <li><a href="">Blog Details</a></li>
+              </ul>
+            </li>
+            <li><a href="#" routerLink="/blog">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-3">
+        <div class="header-cart">
+          <ul>
+            <li>
+              <a href="" [routerLink]="'/cart/' + userId"><i class="fa fa-shopping-bag"></i> <span>{{countProductInCart}}</span></a>
+            </li>
+            <li>
+              <a href=""[routerLink]="'/my-account/' + userId"><i class="fas fa-user"></i></a>
+            </li>
+          </ul>
+          <div class="header-cart-price">Tổng: <span>{{formatNumber(totalPrice)}}₫</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+<!-- <div class="breadcrumb-main">
+  <breadcrumb #parent>
+    <ol class="breadcrumb">
+      <ng-template ngFor let-route [ngForOf]="parent.breadcrumbs">
+        <li *ngIf="!route.terminal" class="breadcrumb-item">
+          <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+        </li>
+        <li *ngIf="route.terminal" class="breadcrumb-item active">
+          {{ route.displayName }}
+        </li>
+      </ng-template>
+    </ol>
+  </breadcrumb>
+</div> -->

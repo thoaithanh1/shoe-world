@@ -1,0 +1,10 @@
+#myEditProduct.modal {
+  padding-right: 500px !important;
+  border: 1px solid #000000;
+  border-radius: 0;
+}
+
+.modal-content {
+  width: 1000px;
+  border-radius: 0;
+}

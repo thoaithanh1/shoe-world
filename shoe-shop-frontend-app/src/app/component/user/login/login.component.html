@@ -1,0 +1,135 @@
+<div class="wrapper">
+  <div class="inner">
+    <form
+      *ngIf="statusShowRegister"
+      [formGroup]="formRegister"
+      (ngSubmit)="onRegister()"
+    >
+      <h3>Registration Form</h3>
+      <div class="form-group">
+        <div class="form-wrapper">
+          <label>First Name</label>
+          <input type="text" class="form-control" formControlName="firstName" />
+          <div *ngIf="firstname.touched && firstname.invalid">
+            <div class="errors"
+              *ngIf="firstname.errors?.['required']"
+            >
+              Tên không được trống*
+            </div>
+          </div>
+        </div>
+        <div class="form-wrapper">
+          <label>Last Name</label>
+          <input type="text" class="form-control" formControlName="lastName" />
+          <div *ngIf="lastname.touched && lastname.invalid">
+            <div class="errors"
+              *ngIf="lastname.errors?.['required']"
+            >
+              Họ không được trống*
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-wrapper">
+        <label>Email</label>
+        <input type="text" class="form-control" formControlName="email" />
+        <div *ngIf="email.touched && email.invalid">
+          <div class="errors"
+            *ngIf="email.errors?.['required']"
+          >
+            Email không được trống*
+          </div>
+          <div class="errors"
+            *ngIf="email.errors?.['email']"
+          >
+            Email không đúng định dạng*
+          </div>
+        </div>
+      </div>
+      <div class="form-wrapper">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+        />
+        <div *ngIf="passwordRegister.touched && passwordRegister.invalid">
+          <div class="errors"
+            *ngIf="passwordRegister.errors?.['required']"
+          >
+            Mật khẩu không được trống*
+          </div>
+        </div>
+      </div>
+      <div class="form-wrapper">
+        <label>Confirm Password</label>
+        <input type="password" class="form-control" />
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" /> I caccept the Terms of Use & Privacy Policy.
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <button type="submit">Register</button>
+      <div class="question-account">
+        <span
+          >Do you already have an account? Click
+          <a (click)="redirectLogin()">Login</a></span
+        >
+      </div>
+    </form>
+
+    <form
+      action=""
+      *ngIf="statusShowLogin"
+      [formGroup]="formLogin"
+      (ngSubmit)="onLogin()"
+    >
+      <h3>Login Form</h3>
+      <div class="form-wrapper">
+        <label>Username</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="username"
+        />
+        <div *ngIf="username.touched && username.invalid">
+          <div class="errors"
+            *ngIf="username.errors?.['required']"
+          >
+            Tên tài khoản không được trống*
+          </div>
+        </div>
+      </div>
+      <div class="form-wrapper">
+        <label>Password</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="password"
+        />
+        <div *ngIf="password.touched && password.invalid">
+          <div class="errors"
+            *ngIf="password.errors?.['required']"
+          >
+            Mật khẩu không được trống*
+          </div>
+        </div>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" /> I caccept the Terms of Use & Privacy Policy.
+          <span class="checkmark"></span>
+        </label>
+      </div>
+      <button type="submit">Login</button>
+      <div class="question-account">
+        <span
+          >Do not have an account?
+          <a (click)="redirectRegister()">Register now!</a></span
+        >
+      </div>
+    </form>
+  </div>
+</div>

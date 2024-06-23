@@ -1,0 +1,9 @@
+<div class="loading-overlay" *ngIf="loading">
+  <div class="spinner"></div>
+  <br />
+  Loading...
+</div>
+<div *ngIf="!loading">
+  <router-outlet></router-outlet>
+  <list-ng-toast></list-ng-toast>
+</div>

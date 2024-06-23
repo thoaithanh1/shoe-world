@@ -1,0 +1,741 @@
+<section class="main">
+  <div class="container-fluid">
+    <div class="header-filter">
+      <h3>Khuyến mại</h3>
+      <div class="header-filter-search">
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Theo mã, tên chương trình"
+          #keyword
+          (keyup.enter)="filterPromotion()"
+        />
+      </div>
+      <div class="header-filter-button">
+        <button (click)="onModalPromotion(0)">
+          <i class="fa-solid fa-plus"></i> Khuyến mại
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2">
+        <div class="promotion-info-detailed">
+          <div
+            class="item"
+            [ngClass]="{ active: statusSize }"
+            (click)="onStatusSize()"
+          >
+            <div class="item-title">Trạng thái</div>
+            <div class="item-content">
+              <div class="form-group">
+                <div class="control">
+                  <span>
+                    <input
+                      type="radio"
+                      id="male"
+                      name="gender"
+                      value="skip"
+                      checked
+                      (click)="clickStatus('skip')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="male">Tất cả</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="female"
+                      name="gender"
+                      value="true"
+                      (click)="clickStatus('true')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="female">Kích hoạt</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="other"
+                      name="gender"
+                      value="false"
+                      (click)="clickStatus('false')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="other">Chưa áp dụng</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="item"
+            [ngClass]="{ active: statusBrand }"
+            (click)="onStatusBrand()"
+          >
+            <div class="item-title">Hiệu lực</div>
+            <div class="item-content">
+              <div class="form-group">
+                <div class="control">
+                  <span>
+                    <input
+                      type="radio"
+                      id="all-expire"
+                      name="expire"
+                      value=""
+                      checked
+                      (click)="clickExpire('')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="all-expire">Tất cả</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="validated"
+                      name="expire"
+                      value="<"
+                      (click)="clickExpire('>')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="validated">Còn hiệu lực</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="expired"
+                      name="expire"
+                      value=">"
+                      (click)="clickExpire('<')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="expired">Hết hiệu lực</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- //// -->
+          <div
+            class="item"
+            [ngClass]="{ active: statusBrand }"
+            (click)="onStatusBrand()"
+          >
+            <div class="item-title">Hình thức</div>
+            <div class="item-content">
+              <div class="form-group">
+                <div class="control">
+                  <span>
+                    <input
+                      type="radio"
+                      id="all-method"
+                      name="method"
+                      value=""
+                      checked
+                      (click)="clickMethod('')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="all-method">Tất cả</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="method-invoice"
+                      name="method"
+                      value="<"
+                      (click)="clickMethod('1')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="method-invoice">Hóa đơn</label>
+                  </span>
+
+                  <span>
+                    <input
+                      type="radio"
+                      id="method-product"
+                      name="method"
+                      value=">"
+                      (click)="clickMethod('2')"
+                      (change)="filterPromotion()"
+                    />
+                    <label for="method-product">Sản phẩm</label>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-10">
+        <div class="grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="width: 150px">Mã chương trình</th>
+                    <th>Tên chương trình</th>
+                    <th>Từ ngày</th>
+                    <th>Đến ngày</th>
+                    <th>Hình thức</th>
+                    <th>Người tạo</th>
+                    <th>Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let p of listPromotion">
+                  <tr
+                    class="promotion-content"
+                    (click)="onDetailPromotion(p.id)"
+                  >
+                    <input type="hidden" [value]="p.id" />
+                    <td class="code">{{ p.code }}</td>
+                    <td class="name">{{ p.name }}</td>
+                    <td class="start-date">
+                      {{ formatTimestamp(p.startDate) }}
+                    </td>
+                    <td class="end-date">{{ formatTimestamp(p.endDate) }}</td>
+                    <td class="discount-type">
+                      {{ p.discountMethod == 1 ? "Hóa đơn" : "Sản phẩm" }}
+                    </td>
+                    <td class="created-by">{{ p.createdBy }}</td>
+                    <td class="status">
+                      {{ p.status ? "Kích hoạt" : "Chưa áp dụng" }}
+                    </td>
+                  </tr>
+                  <tr
+                    class="promotion-detail-row"
+                    [ngStyle]="{ display: promotionId == p.id ? '' : 'none' }"
+                  >
+                    <td class="promotion-detail-cell justify-content-center">
+                      <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item">
+                          <a
+                            class="nav-link active"
+                            data-toggle="pill"
+                            [href]="'#pills-all-' + p.id"
+                            role="tab"
+                            aria-controls="pills-all"
+                            aria-selected="true"
+                            >Thông tin</a
+                          >
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="pill"
+                            [href]="'#pills-processing-' + p.id"
+                            role="tab"
+                            aria-controls="pills-processing"
+                            aria-selected="false"
+                            >Hình thức khuyến mãi</a
+                          >
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="pill"
+                            [href]="'#pills-shipping-' + p.id"
+                            role="tab"
+                            aria-controls="pills-shipping"
+                            aria-selected="false"
+                            >Lịch sử khuyến mãi - Đặt hàng</a
+                          >
+                        </li>
+                        <li class="nav-item">
+                          <a
+                            class="nav-link"
+                            data-toggle="pill"
+                            [href]="'#pills-success-' + p.id"
+                            role="tab"
+                            aria-controls="pills-success"
+                            aria-selected="false"
+                            >Lịch sử khuyến mãi - Hóa đơn</a
+                          >
+                        </li>
+                      </ul>
+                      <div class="tab-content">
+                        <div
+                          class="tab-pane fade show active info"
+                          [id]="'pills-all-' + p.id"
+                          role="tabpanel"
+                          aria-labelledby="pills-all-tab"
+                        >
+                          <div class="form-wrapper content-list">
+                            <div class="row row-padding-15">
+                              <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                  <label class="form-label control-label"
+                                    >Mã chương trình:</label
+                                  >
+                                  <div class="form-wrap form-control-static">
+                                    {{ p.code }}
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="form-label control-label"
+                                    >Thời gian:</label
+                                  >
+                                  <div class="form-wrap form-control-static">
+                                    {{ formatTimestamp(p.startDate) }} -
+                                    {{ formatTimestamp(p.endDate) }}
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6 col-sm-6">
+                                <div class="form-group">
+                                  <label class="form-label control-label"
+                                    >Tên chương trình:</label
+                                  >
+                                  <div class="form-wrap form-control-static">
+                                    {{ p.name }}
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="form-label control-label"
+                                    >Trạng thái:</label
+                                  >
+                                  <div class="form-wrap form-control-static">
+                                    {{
+                                      p.status ? "Kích hoat" : "Chưa áp dụng"
+                                    }}
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label class="form-label control-label">
+                                    <span>Ghi chú:</span>
+                                  </label>
+                                </div>
+                                <div class="form-group">
+                                  <div
+                                    style="white-space: pre-wrap"
+                                    class="form-control-static"
+                                  >
+                                    {{ p.note }}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="group-btn">
+                            <button
+                              class="btn btn-update"
+                              (click)="onModalPromotion(p.id)"
+                            >
+                              <i class="fa-regular fa-square-check"></i> Cập
+                              nhật
+                            </button>
+                            <button
+                              class="btn btn-copy"
+                              (click)="onModalPromotionByCopy(p.id)"
+                            >
+                              <i class="fa-regular fa-copy"></i> Sao chép
+                            </button>
+                            <button class="btn btn-delete">
+                              <i class="fa-solid fa-trash-can"></i> Xóa
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          [id]="'pills-processing-' + p.id"
+                          role="tabpanel"
+                          aria-labelledby="pills-processing-tab"
+                        >
+                          <div class="table-method">
+                            <table class="table table-responsive">
+                              <thead>
+                                <tr>
+                                  <th>Tổng tiền hàng từ</th>
+                                  <th *ngIf="p.discountMethod == 1">Giảm giá hóa đơn</th>
+                                  <th *ngIf="p.discountMethod == 2">Giảm giá sản phẩm</th>
+                                  <th>Giảm tối đa</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>{{formatPrice(p.conditionsApply)}}₫</td>
+                                  <td *ngIf="p.discountType == 1">{{p.discountValue}}₫</td>
+                                  <td *ngIf="p.discountType == 2">{{p.discountValue}}%</td>
+                                  <td>{{formatPrice(p.maxDiscountAmount)}}₫</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          [id]="'pills-shipping-' + p.id"
+                          role="tabpanel"
+                          aria-labelledby="pills-shipping-tab"
+                        >
+                          Shipping
+                        </div>
+                        <div
+                          class="tab-pane fade"
+                          [id]="'pills-success-' + p.id"
+                          role="tabpanel"
+                          aria-labelledby="pills-success-tab"
+                        >
+                          Success
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div
+  class="modal-new-address modal in"
+  [ngStyle]="{ display: statusModal ? '' : 'none' }"
+>
+  <div class="modal-backdrop">
+    <div class="modal-container">
+      <div class="modal-content">
+        <form [formGroup]="formPromotion" (ngSubmit)="savePromotion()">
+          <div class="modal-header">
+            <div class="modal-close" (click)="onModalPromotion(0)">
+              <span class="screen-reader-text"></span>
+            </div>
+            <h4 class="modal-title">Chương trình khuyến mãi</h4>
+            <input type="hidden" formControlName="id" />
+          </div>
+          <div class="modal-body form-wrapper">
+            <div class="row border-line">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label control-label"
+                    >Mã chương trình</label
+                  >
+                  <div class="form-wrap">
+                    <input
+                      type="text"
+                      class="form-control"
+                      maxlength="50"
+                      placeholder="Mã tự động"
+                      readonly
+                      formControlName="code"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label control-label"
+                    >Tên chương trình</label
+                  >
+                  <div class="form-wrap">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Tên chương trình khuyến mại"
+                      maxlength="255"
+                      formControlName="name"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label control-label">Trạng thái</label>
+                  <div class="control">
+                    <span>
+                      <input
+                        type="radio"
+                        id="a"
+                        name="status"
+                        value="true"
+                        checked
+                        formControlName="status"
+                      />
+                      <label for="a">Kích hoạt</label>
+                    </span>
+
+                    <span>
+                      <input
+                        type="radio"
+                        id="b"
+                        name="status"
+                        value="false"
+                        formControlName="status"
+                      />
+                      <label for="b">Chưa áp dụng</label>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="wrap-note">
+                    <textarea
+                      type="text"
+                      class="form-control"
+                      placeholder="Ghi chú..."
+                      style="height: 70.8px"
+                      formControlName="note"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row border-line form-time">
+              <div class="form-group">
+                <label class="form-label control-label">Thời gian: </label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="startDate"
+                />
+                <span>-</span>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="endDate"
+                />
+              </div>
+            </div>
+            <h5 class="form-title">Hình thức khuyến mại</h5>
+            <div class="form-inline">
+              <div class="form-group">
+                <label class="form-label control-label">
+                  Khuyến mại theo
+                </label>
+                <div class="form-wrapp">
+                  <span>
+                    <select
+                      class="form-control"
+                      (change)="onStatusMethodPromotion($event)"
+                      formControlName="discountMethod"
+                    >
+                      <option value="1" selected>Hóa đơn</option>
+                      <option value="2">Sản phẩm</option>
+                    </select>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="promotion-conditions">
+              <div class="window-wrap-table">
+                <table class="table-primary" *ngIf="valueMethodPromotion == 1">
+                  <thead>
+                    <tr>
+                      <th class="don-hang">Tổng tiền hàng</th>
+                      <th class="giam-gia">Giá trị khuyến mại</th>
+                      <th class="giam-toi-da" *ngIf="valueTypePromotion == 2">
+                        Giá trị giảm tối đa
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="don-hang">
+                        <div class="wrap-label">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="0"
+                            formControlName="conditionsApply"
+                          />
+                        </div>
+                      </td>
+                      <td class="giam-gia">
+                        <div class="method">
+                          <input
+                            type="text"
+                            class="form-control input-text"
+                            formControlName="discountValue"
+                          />
+                          <label class="cash" style="cursor: pointer">
+                            <input
+                              type="radio"
+                              name="discountType"
+                              value="1"
+                              [checked]="valueTypePromotion == 1"
+                              (click)="onStatusTypePromotion(1)"
+                              formControlName="discountType"
+                            />
+                            <span>VND</span>
+                          </label>
+                          <label class="percent" style="cursor: pointer">
+                            <input
+                              type="radio"
+                              name="discountType"
+                              value="2"
+                              [checked]="valueTypePromotion == 2"
+                              (click)="onStatusTypePromotion(2)"
+                              formControlName="discountType"
+                            />
+                            <span>%</span>
+                          </label>
+                        </div>
+                      </td>
+                      <td *ngIf="valueTypePromotion == 2">
+                        <div class="wrap-label">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="0"
+                            formControlName="maxDiscountAmount"
+                          />
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="table-primary" *ngIf="valueMethodPromotion == 2">
+                  <thead>
+                    <tr>
+                      <th class="don-hang">Số lượng</th>
+                      <th class="group-product-discount">
+                        Nhóm hàng khuyến mại
+                      </th>
+                      <th class="giam-gia">Giá trị khuyến mại</th>
+                      <th class="giam-toi-da" *ngIf="valueTypePromotion == 2">
+                        Giá trị giảm tối đa
+                      </th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="don-hang">
+                        <div class="wrap-label">
+                          <label class="control-label">Từ</label>
+                          <input type="text" class="form-control" value="0" />
+                        </div>
+                      </td>
+                      <td class="group-product-discount">
+                        <span class="form-control"></span>
+                        <button
+                          data-toggle="modal"
+                          data-target="#myEditProduct"
+                        >
+                          <i class="fa-solid fa-list-ul"></i>
+                        </button>
+                      </td>
+                      <td class="giam-gia">
+                        <div class="method">
+                          <input
+                            type="text"
+                            class="form-control input-text"
+                            formControlName="discountValue"
+                          />
+                          <label class="cash" style="cursor: pointer">
+                            <input
+                              type="radio"
+                              name="discountType"
+                              value="1"
+                              [checked]="valueTypePromotion == 1"
+                              (click)="onStatusTypePromotion(1)"
+                              formControlName="discountType"
+                            />
+                            <span>VND</span>
+                          </label>
+                          <label class="percent" style="cursor: pointer">
+                            <input
+                              type="radio"
+                              name="discountType"
+                              value="2"
+                              [checked]="valueTypePromotion == 2"
+                              (click)="onStatusTypePromotion(2)"
+                              formControlName="discountType"
+                            />
+                            <span>%</span>
+                          </label>
+                        </div>
+                      </td>
+                      <td *ngIf="valueTypePromotion == 2">
+                        <div class="wrap-label">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="0"
+                            formControlName="maxDiscountAmount"
+                          />
+                        </div>
+                      </td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-save">
+              <i class="fa-regular fa-floppy-disk"></i>&nbsp;Lưu
+            </button>
+            <button class="btn btn-save" (click)="onModalPromotion(0)">
+              <i class="fa-solid fa-ban"></i>&nbsp;Hủy bỏ
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myEditProduct">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Chọn sản phẩm</h4>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-wrapper form-labels-80 select-group-product">
+          <div class="customer-search-autocomplete productTreeSearch">
+            <div class="autocomplete">
+              <input
+                type="text"
+                placeholder="Tìm kiếm nhóm hàng"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="product-tree-view">
+            <ul class="product-group" style="display: block">
+              <li class="product-item">
+                <div class="item">
+                  <input type="checkbox" class="product-checkbox" />
+                  <label class="k-checkbox-label">Phụ kiện Nam</label>
+                </div>
+              </li>
+              <li class="product-item">
+                <div class="item">
+                  <input type="checkbox" class="product-checkbox" />
+                  <label class="k-checkbox-label">Phụ kiện Nữ</label>
+                </div>
+              </li>
+              <li class="product-item">
+                <div class="item">
+                  <input type="checkbox" class="product-checkbox" />
+                  <label class="k-checkbox-label">Phụ kiện Unisex</label>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-save">
+          <i class="fa-regular fa-floppy-disk"></i>&nbsp;Xong
+        </button>
+        <button class="btn btn-save">
+          <i class="fa-solid fa-ban"></i>&nbsp;Hủy bỏ
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

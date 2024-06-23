@@ -1,0 +1,16 @@
+<app-header></app-header>
+<div class="container">
+  <div class="no-data-cart" *ngIf="responseCode === '00'">
+    <p>
+        Đặt hàng thành công! <br />
+      <img src="assets/images/icon-success-status.svg" alt=""/>
+    </p>
+  </div>
+  <div class="no-data-cart" *ngIf="responseCode === '24'">
+    <p>
+        Giao dịch đã bị hủy. <br />
+      <img src="assets/images/icon-cancelled-status.svg" alt=""/>
+    </p>
+  </div>
+</div>
+<app-footer></app-footer>

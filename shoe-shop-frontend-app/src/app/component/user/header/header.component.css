@@ -1,0 +1,295 @@
+.header {
+  font-family: "Cairo", sans-serif;
+  border-bottom: 1px solid #f3efef;
+}
+
+.header-top {
+  background: #f5f5f5;
+}
+
+.header-top-left {
+  padding-top: 10px;
+}
+
+.header-top-left ul {
+  padding-left: 0;
+}
+
+.header-top-left ul li {
+  font-size: 14px;
+  color: #1c1c1c;
+  display: inline-block;
+  margin-right: 45px;
+  position: relative;
+}
+
+.header-top-left ul li:after {
+  position: absolute;
+  right: -25px;
+  top: 1px;
+  height: 20px;
+  width: 1px;
+  background: #000000;
+  opacity: 0.1;
+  content: "";
+}
+
+.header-top-left ul li:last-child {
+  margin-right: 0;
+}
+
+.header-top-left ul li:last-child:after {
+  display: none;
+}
+
+.header-top-left ul li i {
+  color: #252525;
+  margin-right: 5px;
+}
+
+.header-top-right {
+  text-align: right;
+  padding: 10px 0 13px;
+}
+
+.header-top-right-social {
+  position: relative;
+  display: inline-block;
+  margin-right: 35px;
+}
+
+.header-top-right-social:after {
+  position: absolute;
+  right: -20px;
+  top: 1px;
+  height: 20px;
+  width: 1px;
+  background: #000000;
+  opacity: 0.1;
+  content: "";
+}
+
+.header-top-right-social a {
+  font-size: 14px;
+  display: inline-block;
+  color: #1c1c1c;
+  margin-right: 20px;
+}
+
+.header-top-right-social a:last-child {
+  margin-right: 0;
+}
+
+.header-top-right-language {
+  position: relative;
+  display: inline-block;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.header-top-right-language:hover ul {
+  top: 23px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.header-top-right-language:after {
+  position: absolute;
+  right: -21px;
+  top: 1px;
+  height: 20px;
+  width: 1px;
+  background: #000000;
+  opacity: 0.1;
+  content: "";
+}
+
+.header-top-right-language img {
+  margin-right: 6px;
+}
+
+.header-top-right-language div {
+  font-size: 14px;
+  color: #1c1c1c;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.header-top-right-language span {
+  font-size: 14px;
+  color: #1c1c1c;
+  position: relative;
+  top: 2px;
+}
+
+.header-top-right-language ul {
+  background: #222222;
+  width: 100px;
+  text-align: left;
+  padding: 5px 0;
+  position: absolute;
+  left: 0;
+  top: 43px;
+  z-index: 9;
+  opacity: 0;
+  visibility: hidden;
+  transition: all, 0.3s;
+}
+
+.header-top-right-language ul li {
+  list-style: none;
+}
+
+.header-top-right-language ul li a {
+  font-size: 14px;
+  color: #ffffff;
+  padding: 5px 10px;
+}
+
+.header-top-right-auth {
+  display: inline-block;
+}
+
+.header-top-right-auth a {
+  display: block;
+  font-size: 14px;
+  color: #1c1c1c;
+}
+
+.header-top-right-auth a i {
+  margin-right: 6px;
+}
+
+.header-logo {
+  padding: 15px 0;
+}
+
+.header-logo a {
+  display: inline-block;
+}
+
+.header-menu {
+  padding: 24px 0;
+}
+
+.header-menu ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 50px;
+  position: relative;
+}
+
+.header-menu ul li .header-menu-dropdown {
+  position: absolute;
+  left: 0;
+  top: 50px;
+  background: #222222;
+  width: 180px;
+  z-index: 9;
+  padding: 5px 0;
+  transition: all, 0.3s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.header-menu ul li .header-menu-dropdown li {
+  margin-right: 0;
+  display: block;
+}
+
+.header-menu ul li .header-menu-dropdown li:hover > a {
+  color: #7fad39;
+}
+
+.header-menu ul li .active a {
+  color: #7fad39;
+}
+
+.header-menu ul li:hover .header-menu-dropdown {
+  top: 30px;
+  opacity: 1;
+  visibility: visible;
+}
+
+.header-menu ul li:hover > a {
+  color: #7fad39;
+  text-decoration: none;
+}
+
+.header-menu ul li:last-child {
+  margin-right: 0;
+}
+
+.header-menu ul li a {
+  font-size: 14px;
+  color: #252525;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: all, 0.3s;
+  padding: 5px 0;
+  display: block;
+}
+
+.header-menu ul li .header-menu-dropdown li a {
+  text-transform: capitalize;
+  color: #ffffff;
+  font-weight: 400;
+  padding: 5px 15px;
+}
+
+.header-cart {
+  text-align: left;
+  padding: 24px 0;
+}
+
+.header-cart ul {
+  display: inline-block;
+  margin-right: 25px;
+}
+
+.header-cart ul li {
+  list-style: none;
+  display: inline-block;
+  margin-right: 15px;
+}
+
+.header-cart ul li:last-child {
+  margin-right: 0;
+}
+
+.header-cart ul li a {
+  position: relative;
+}
+
+.header-cart ul li a i {
+  font-size: 18px;
+  color: #1c1c1c;
+}
+
+.header-cart ul li a span {
+  height: 13px;
+  width: 13px;
+  background: #7fad39;
+  font-size: 10px;
+  color: #ffffff;
+  line-height: 13px;
+  text-align: center;
+  font-weight: 700;
+  display: inline-block;
+  border-radius: 50%;
+  position: absolute;
+  top: -6px;
+  right: -12px;
+}
+
+.header-cart .header-cart-price {
+  font-size: 14px;
+  color: #6f6f6f;
+  display: inline-block;
+}
+
+.header-cart .header-cart-price span {
+  color: #252525;
+  font-weight: 700;
+}
